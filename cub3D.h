@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:18:49 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/22 11:05:19 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/01/22 14:02:30 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,5 @@ typedef struct s_map
 }		t_map;
 
 int	read_map(char *map_file, t_map *map);
-
 
 #endif
