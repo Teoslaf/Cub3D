@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/22 16:54:41 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/23 11:01:04 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,9 @@ static int	get_map_line_width(char *map_file, t_map *map)
 	return (0);
 }
 
-/* int	isSurroundedByOnes(t_map *map)
-{
-	for (int i = 0; i < map->height; i++)
-	{
-		int width = strlen(map->map[i]);
-		if (map->map[i][0] == '0' || map->map[i][width - 1] == '0')
-		{
-			return (0);
-		}
-	}
-	return (1);
-} */
-
 void	print_map(t_map map)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < map.height)
@@ -137,13 +124,12 @@ int	empty_map(char *map_file)
 // check player;
 int	check_player(t_map *map)
 {
-	int	i;
-	int	j;
+	size_t	i;
+	size_t	j;
 	int	n;
 	int	s;
 	int	w;
 	int	e;
-	int	width;
 
 	n = 0;
 	s = 0;
@@ -152,9 +138,9 @@ int	check_player(t_map *map)
 	i = 0;
 	while (i < map->height)
 	{
-		width = ft_strlen(map->map[i]);
+		map->width = ft_strlen(map->map[i]);
 		j = 0;
-		while (j < width)
+		while (j < map->width)
 		{
 			if (map->map[i][j] == 'N')
 				n++;
@@ -169,21 +155,21 @@ int	check_player(t_map *map)
 		i++;
 	}
 	if (n == 1 && s == 0 && w == 0 && e == 0)
-		return (0);
-	else if (n == 0 && s == 1 && w == 0 && e == 0)
-		return (0);
-	else if (n == 0 && s == 0 && w == 1 && e == 0)
-		return (0);
-	else if (n == 0 && s == 0 && w == 0 && e == 1)
-		return (0);
-	else
 		return (1);
+	else if (n == 0 && s == 1 && w == 0 && e == 0)
+		return (2);
+	else if (n == 0 && s == 0 && w == 1 && e == 0)
+		return (3);
+	else if (n == 0 && s == 0 && w == 0 && e == 1)
+		return (4);
+	else
+		return (-1);
 }
 
 // check if 3x3
 int	checkSize(t_map *map)
 {
-	int	i;
+	size_t	i;
 
 	if (map == NULL || map->map == NULL || map->height < 3)
 		return (1);
@@ -195,6 +181,57 @@ int	checkSize(t_map *map)
 		i++;
 	}
 	return (0);
+}
+size_t	get_pos_by_char(t_map *map, char c, char search_char)
+{
+	size_t	y;
+	size_t	x;
+	size_t i = 0;
+
+	y = 0;
+	if (map == NULL || map->map == NULL)
+		return (0);
+	while (y < map->height)
+	{
+		map->width = ft_strlen(map->map[i]);
+		x = 0;
+		while (x < map->width)
+		{
+			if (map->map[y][x] == search_char)
+			{
+				if (c == 'x')
+					return (x);
+				else
+					return (y);
+			}
+			x++;
+		}
+		y++;
+	}
+	return (0);
+}
+void	check_cords(t_map *map)
+{
+	if (check_player(map) == 1)
+	{
+		map->player_x = get_pos_by_char(map, 'x', 'N');
+		map->player_y = get_pos_by_char(map, 'y', 'N');
+	}
+	else if (check_player(map) == 2)
+	{
+		map->player_x = get_pos_by_char(map, 'x', 'S');
+		map->player_y = get_pos_by_char(map, 'y', 'S');
+	}
+	else if (check_player(map) == 3)
+	{
+		map->player_x = get_pos_by_char(map, 'x', 'W');
+		map->player_y = get_pos_by_char(map, 'y', 'W');
+	}
+	else if (check_player(map) == 4)
+	{
+		map->player_x = get_pos_by_char(map, 'x', 'E');
+		map->player_y = get_pos_by_char(map, 'y', 'E');
+	}
 }
 void	check_teos_maps(char *map_file)
 {
@@ -218,12 +255,12 @@ int	read_map(char *map_file, t_map *map)
 	if (get_map_line_width(map_file, map)
 		&& printf("Some error occured while reading the map!\n"))
 		return (1);
-	if (check_player(map) == 1)
+	if (check_player(map) == -1)
 		printf("player err \n");
 	if (checkSize(map) == 1)
 		printf("less then 3x3 \n");
-	if(isSurroundedByOnes(map) != 1)
-		printf("not surronded by 1s \n");
+	check_cords(map);
+	printf("x cords = %zu, y cords = %zu \n ", map->player_x, map->player_y);
 	close(fd);
 	print_map(*map);
 	return (0);
