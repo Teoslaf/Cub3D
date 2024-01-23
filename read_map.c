@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/23 16:06:25 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/23 16:13:26 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,7 +254,6 @@ void	copy_game(t_map *source, t_map *destination)
 	destination->player_y = source->player_y;
 	destination->player_x = source->player_x;
 	destination->player_char = source->player_char;
-	// destination->player_char = '1';
 	destination->map = (char **)malloc(sizeof(char *) * destination->height);
 	if (destination->map == NULL)
 	{
@@ -269,6 +268,11 @@ void	copy_game(t_map *source, t_map *destination)
 	}
 }
 
+int path(t_map *temp)
+{
+	printf("x cords = %zu, y cords = %zu \n ", temp->player_x, temp->player_y);
+	return 0;
+}
 int	is_valid_path(t_map *map)
 {
 	t_map	temp;
@@ -308,7 +312,6 @@ int	read_map(char *map_file, t_map *map)
 	if (checkSize(map) == 1)
 		printf("less then 3x3 \n");
 	check_cords(map);
-	printf("x cords = %zu, y cords = %zu \n ", map->player_x, map->player_y);
 	if (map->map && map->player_y < map->height && map->player_x < map->width)
 		map->player_char = map->map[map->player_y][map->player_x];
 	is_valid_path(map);
