@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/23 11:54:05 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/23 12:17:33 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,6 @@ int	read_map(char *map_file, t_map *map)
 /* 	printf("Value at coordinates (%zu, %zu) is: %c\n", map->player_x,
 		map->player_y, map->player_char); */
 	close(fd);
-	print_map(*map);
+	print_map(*map); 
 	return (0);
 }
