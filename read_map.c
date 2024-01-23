@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/23 11:01:04 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/23 11:54:05 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,10 +126,10 @@ int	check_player(t_map *map)
 {
 	size_t	i;
 	size_t	j;
-	int	n;
-	int	s;
-	int	w;
-	int	e;
+	int		n;
+	int		s;
+	int		w;
+	int		e;
 
 	n = 0;
 	s = 0;
@@ -186,8 +186,9 @@ size_t	get_pos_by_char(t_map *map, char c, char search_char)
 {
 	size_t	y;
 	size_t	x;
-	size_t i = 0;
+	size_t	i;
 
+	i = 0;
 	y = 0;
 	if (map == NULL || map->map == NULL)
 		return (0);
@@ -261,6 +262,9 @@ int	read_map(char *map_file, t_map *map)
 		printf("less then 3x3 \n");
 	check_cords(map);
 	printf("x cords = %zu, y cords = %zu \n ", map->player_x, map->player_y);
+	map->player_char = map->map[map->player_y][map->player_x];
+/* 	printf("Value at coordinates (%zu, %zu) is: %c\n", map->player_x,
+		map->player_y, map->player_char); */
 	close(fd);
 	print_map(*map);
 	return (0);
