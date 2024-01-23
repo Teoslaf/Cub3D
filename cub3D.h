@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:18:49 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/23 10:58:46 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/23 11:53:26 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_map
 {
 	size_t	width;
 	size_t	height;
+	char	player_char;
 	size_t 	player_x;
 	size_t 	player_y;
 	char	**map;
