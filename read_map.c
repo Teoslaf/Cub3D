@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/23 16:13:26 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/23 16:49:07 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,35 +267,54 @@ void	copy_game(t_map *source, t_map *destination)
 		i++;
 	}
 }
-
-int path(t_map *temp)
+int	is_valid(char c)
 {
-	printf("x cords = %zu, y cords = %zu \n ", temp->player_x, temp->player_y);
-	return 0;
+	return (c != ' ' && c != '\t' && c != '\n' && c != '\0');
+}
+int	path(t_map *temp, size_t y, size_t x)
+{
+	// printf("x cords = %zu, y cords = %zu \n", x, y);
+	if (y >= temp->height || x >= strlen(temp->map[y]))
+	{
+		return (0);
+	}
+	if (temp->map[y][x] == '1')
+	{
+		return (0);
+	}
+	temp->map[y][x] = '1';
+	if (y == temp->height - 1 && x == strlen(temp->map[y]) - 1)
+		return (1);
+	if (path(temp, y, x + 1))
+		return (1);
+	if (x > 0 && path(temp, y, x - 1))
+		return (1);
+	if (y + 1 < temp->height && path(temp, y + 1, x))
+		return (1);
+	if (y > 0 && path(temp, y - 1, x))
+		return (1);
+	return (0);
 }
 int	is_valid_path(t_map *map)
 {
 	t_map	temp;
 
 	copy_game(map, &temp);
-	print_map(temp);
-	printf("---------------------\n");
-	print_map(*map);
-
-
-/* 	if (path(&temp, temp.player_y, temp.player_x))
+	if (path(&temp, temp.player_y, temp.player_x))
 	{
 		if (temp.player_x == temp.width - 1)
 		{
 			return (1);
 		}
-	} */
+	}
+	print_map(temp);
 	return (0);
 }
 
 int	read_map(char *map_file, t_map *map)
 {
 	int	fd;
+
 	fd = open(map_file, O_RDONLY);
 	if (fd == -1 && printf("Error opening the map\n"))
 		return (1);
@@ -314,7 +333,8 @@ int	read_map(char *map_file, t_map *map)
 	check_cords(map);
 	if (map->map && map->player_y < map->height && map->player_x < map->width)
 		map->player_char = map->map[map->player_y][map->player_x];
-	is_valid_path(map);
+	if (is_valid_path(map) == -1)
+		printf("err\n");
 	/* 	printf("Value at coordinates (%zu, %zu) is: %c\n", map->player_x,
 			map->player_y, map->player_char); */
 	close(fd);
