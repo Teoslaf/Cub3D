@@ -30,7 +30,6 @@ clean:
 
 fclean: clean
 	make -C $(LIBFT) fclean
-	make -C $(MLX) fclean
 	rm -f $(NAME)
 
 re: fclean all

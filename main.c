@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:17:28 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/22 10:55:18 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/01/23 10:59:38 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_map map;
-
+	size_t i = 0;
 	map.height = 0;
 	map.width = 0;
 
@@ -24,6 +24,12 @@ int main(int argc, char **argv)
 	if (argc > 2)
 		printf("Too many arguments\n");
 	if (read_map(argv[1], &map))
+	{
 		printf("Error opening the map\n");
-	return  (0);
+		exit(1);
+	}
+	while (i < map.height)
+		free(map.map[i++]);
+	free(map.map);
+	return (0);
 }
