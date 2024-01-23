@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/23 12:28:24 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/23 16:06:25 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ void	print_map(t_map map)
 		printf("%s", map.map[i]);
 		i++;
 	}
+	printf("\n");
 }
 // checks file extention
 void	check_file_extension(char *file)
@@ -213,6 +214,8 @@ size_t	get_pos_by_char(t_map *map, char c, char search_char)
 }
 void	check_cords(t_map *map)
 {
+	map->player_x = 0;
+	map->player_y = 0;
 	if (check_player(map) == 1)
 	{
 		map->player_x = get_pos_by_char(map, 'x', 'N');
@@ -233,6 +236,7 @@ void	check_cords(t_map *map)
 		map->player_x = get_pos_by_char(map, 'x', 'E');
 		map->player_y = get_pos_by_char(map, 'y', 'E');
 	}
+	map->player_char = '1';
 }
 void	check_teos_maps(char *map_file)
 {
@@ -241,10 +245,53 @@ void	check_teos_maps(char *map_file)
 		printf("empty map bruv \n");
 }
 
+void	copy_game(t_map *source, t_map *destination)
+{
+	size_t	i;
+
+	destination->height = source->height;
+	destination->width = source->width;
+	destination->player_y = source->player_y;
+	destination->player_x = source->player_x;
+	destination->player_char = source->player_char;
+	// destination->player_char = '1';
+	destination->map = (char **)malloc(sizeof(char *) * destination->height);
+	if (destination->map == NULL)
+	{
+		ft_putstr_fd("rip alloc", 1);
+		exit(1);
+	}
+	i = 0;
+	while (i < destination->height)
+	{
+		destination->map[i] = ft_strdup(source->map[i]);
+		i++;
+	}
+}
+
+int	is_valid_path(t_map *map)
+{
+	t_map	temp;
+
+	copy_game(map, &temp);
+	print_map(temp);
+	printf("---------------------\n");
+	print_map(*map);
+
+
+/* 	if (path(&temp, temp.player_y, temp.player_x))
+	{
+		if (temp.player_x == temp.width - 1)
+		{
+			return (1);
+		}
+	} */
+	return (0);
+}
+
 int	read_map(char *map_file, t_map *map)
 {
 	int	fd;
-
 	fd = open(map_file, O_RDONLY);
 	if (fd == -1 && printf("Error opening the map\n"))
 		return (1);
@@ -262,10 +309,12 @@ int	read_map(char *map_file, t_map *map)
 		printf("less then 3x3 \n");
 	check_cords(map);
 	printf("x cords = %zu, y cords = %zu \n ", map->player_x, map->player_y);
-	map->player_char = map->map[map->player_y][map->player_x];
-/* 	printf("Value at coordinates (%zu, %zu) is: %c\n", map->player_x,
-		map->player_y, map->player_char); */
+	if (map->map && map->player_y < map->height && map->player_x < map->width)
+		map->player_char = map->map[map->player_y][map->player_x];
+	is_valid_path(map);
+	/* 	printf("Value at coordinates (%zu, %zu) is: %c\n", map->player_x,
+			map->player_y, map->player_char); */
 	close(fd);
-	print_map(*map); 
-	return (0); 
+	// print_map(*map);
+	return (0);
 }

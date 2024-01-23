@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:17:28 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/23 10:59:38 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/23 12:49:46 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	main(int argc, char **argv)
 {
 	t_map map;
-	size_t i = 0;
+	// size_t i = 0;
 	map.height = 0;
 	map.width = 0;
 
@@ -28,8 +28,8 @@ int	main(int argc, char **argv)
 		printf("Error opening the map\n");
 		exit(1);
 	}
-	while (i < map.height)
-		free(map.map[i++]);
+	// while (i < map.height)
+	// 	free(map.map[i++]);
 	free(map.map);
 	return (0);
 }
