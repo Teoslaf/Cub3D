@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/24 11:09:08 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/24 15:14:10 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,17 @@ static int	get_map_line_width(char *map_file, t_map *map)
 	}
 	close(fd);
 	return (0);
+}
+void	check_last_line_length(t_map *map)
+{
+	size_t	last_line_length;
+
+	if (map->height == 0)
+	{
+		return ;
+	}
+	last_line_length = strlen(map->map[map->height - 2]);
+	printf("%zu \n", last_line_length);
 }
 
 void	print_map(t_map map)
@@ -244,7 +255,21 @@ void	check_teos_maps(char *map_file)
 	if (empty_map(map_file) == -1)
 		printf("empty map bruv \n");
 }
-
+int	compare_maps(t_map *map1, t_map *map2)
+{
+	if (map1->height != map2->height)
+	{
+		return (0); // The maps have different heights
+	}
+	for (size_t i = 0; i < map1->height; i++)
+	{
+		if (strlen(map1->map[i]) != strlen(map2->map[i]))
+		{
+			return (0); // The width of line i is different in the maps
+		}
+	}
+	return (1); // The widths of all lines are identical
+}
 void	copy_game(t_map *source, t_map *destination)
 {
 	size_t	i;
@@ -271,8 +296,7 @@ int	is_valid(char c)
 {
 	return (c != ' ' && c != '\t' && c != '\n' && c != '\0');
 }
-
-/* int	path(t_map *temp, size_t y, size_t x)
+int	path(t_map *temp, size_t y, size_t x)
 {
 	// printf("x cords = %zu, y cords = %zu \n", x, y);
 	if (y >= temp->height || x >= strlen(temp->map[y]))
@@ -283,34 +307,62 @@ int	is_valid(char c)
 	{
 		return (0);
 	}
-	if((is_valid(temp->map[y][x]) == 0 && temp->map[y][x - 1] == '0') || (is_valid(temp->map[y][x]) == 0 && temp->map[y - 1][x] == '0'))
-		printf("not valid map");
+	if (temp->map[y][x] == '0')
+	{
+		if (temp->map[y][x + 1] == ' ' || temp->map[y][x - 1] == ' '
+			|| temp->map[y - 1][x] == ' ' || temp->map[y + 1][x] == ' ')
+		{
+			printf("space \n");
+			return(0);
+		}
+		else if ((temp->map[y][x + 1] == '\t' || temp->map[y][x - 1] == '\t'
+				|| temp->map[y - 1][x] == '\t' || temp->map[y + 1][x] == '\t'))
+		{
+			printf("tab \n");
+			return(0);
+		}
+		else if ((temp->map[y][x + 1] == '\n' || temp->map[y][x - 1] == '\n'
+				|| temp->map[y - 1][x] == '\n' || temp->map[y + 1][x] == '\n'))
+		{
+			printf("new line \n");
+			return(0);
+		}
+	}
 	temp->map[y][x] = '1';
 	if (y == temp->height - 1 && x == strlen(temp->map[y]) - 1)
 		return (1);
 	if (path(temp, y, x + 1))
 		return (1);
-	if (x > 0 && path(temp, y, x - 1))
+	if (path(temp, y, x - 1))
 		return (1);
-	if (y + 1 < temp->height && path(temp, y + 1, x))
+	if (path(temp, y + 1, x))
 		return (1);
-	if (y > 0 && path(temp, y - 1, x))
+	if (path(temp, y - 1, x))
+		return (1);
+	if (path(temp, y + 1, x + 1))
+		return (1);
+	if (path(temp, y + 1, x - 1))
+		return (1);
+	if (path(temp, y - 1, x + 1))
+		return (1);
+	if (path(temp, y - 1, x - 1))
 		return (1);
 	return (0);
-} */
+}
+
 int	is_valid_path(t_map *map)
 {
 	t_map	temp;
 
 	copy_game(map, &temp);
-/* 	if (path(&temp, temp.player_y, temp.player_x))
+	if (path(&temp, temp.player_y, temp.player_x))
 	{
 		if (temp.player_x == temp.width - 1)
-		{
 			return (1);
-		}
-	} */
-	print_map(temp);
+	}
+		print_map(*map);
+		printf("===========================================\n");
+		print_map(temp);
 	return (0);
 }
 
@@ -337,7 +389,10 @@ int	read_map(char *map_file, t_map *map)
 	if (map->map && map->player_y < map->height && map->player_x < map->width)
 		map->player_char = map->map[map->player_y][map->player_x];
 	if (is_valid_path(map) == -1)
-		printf("err\n");
+	{
+		printf("not valid map\n");
+		exit(1);
+	}
 	/* 	printf("Value at coordinates (%zu, %zu) is: %c\n", map->player_x,
 			map->player_y, map->player_char); */
 	close(fd);
