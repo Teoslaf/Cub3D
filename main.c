@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:17:28 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/24 15:56:18 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:14:00 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int main(int argc, char **argv)
 	if (read_map(argv[1], &map))
 		printf("Error opening the map\n");
 	else
-	
 		printf("Valid Map\n");
 	// print_map(map);
 	// printf("%s\n", map.map[14]);

@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:22:57 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/01/24 16:06:18 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:13:06 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	check_player(t_map *map)
 		j = 0;
 		while (j < map->width)
 		{
-			// printf("char L %c\n",map->map[i][j]);
 			if (map->map[i][j] == 'N')
 				n++;
 			else if (map->map[i][j] == 'S')
@@ -199,19 +198,19 @@ int	path(t_map *temp, int y, int x)
 			|| temp->map[y - 1][x] == ' ' || temp->map[y + 1][x] == ' ')
 		{
 			printf("space \n");
-			return(0);
+			return(-1);
 		}
 		else if ((temp->map[y][x + 1] == '\t' || temp->map[y][x - 1] == '\t'
 				|| temp->map[y - 1][x] == '\t' || temp->map[y + 1][x] == '\t'))
 		{
 			printf("tab \n");
-			return(0);
+			return(-1);
 		}
 		else if ((temp->map[y][x + 1] == '\n' || temp->map[y][x - 1] == '\n'
 				|| temp->map[y - 1][x] == '\n' || temp->map[y + 1][x] == '\n'))
 		{
 			printf("new line \n");
-			return(0);
+			return(-1);
 		}
 	}
 	temp->map[y][x] = '1';

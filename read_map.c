@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/24 16:06:42 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:19:36 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,11 +202,8 @@ int	read_map(char *map_file, t_map *map)
 	check_cords(map);
 	if (map->map && map->player_y < map->height && map->player_x < map->width)
 		map->player_char = map->map[map->player_y][map->player_x];
-	// if (is_valid_path(map) == -1)
-	// {
-	// 	printf("not valid map\n");
-	// 	exit(1);
-	// }
+	if(is_valid_path(map) == -1)
+		return 1;
 	close(fd);
 	// i = -1;
 	// printf("FLOOR: ");
