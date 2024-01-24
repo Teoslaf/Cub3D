@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/23 16:49:07 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/01/24 11:09:08 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,7 +271,8 @@ int	is_valid(char c)
 {
 	return (c != ' ' && c != '\t' && c != '\n' && c != '\0');
 }
-int	path(t_map *temp, size_t y, size_t x)
+
+/* int	path(t_map *temp, size_t y, size_t x)
 {
 	// printf("x cords = %zu, y cords = %zu \n", x, y);
 	if (y >= temp->height || x >= strlen(temp->map[y]))
@@ -282,6 +283,8 @@ int	path(t_map *temp, size_t y, size_t x)
 	{
 		return (0);
 	}
+	if((is_valid(temp->map[y][x]) == 0 && temp->map[y][x - 1] == '0') || (is_valid(temp->map[y][x]) == 0 && temp->map[y - 1][x] == '0'))
+		printf("not valid map");
 	temp->map[y][x] = '1';
 	if (y == temp->height - 1 && x == strlen(temp->map[y]) - 1)
 		return (1);
@@ -294,19 +297,19 @@ int	path(t_map *temp, size_t y, size_t x)
 	if (y > 0 && path(temp, y - 1, x))
 		return (1);
 	return (0);
-}
+} */
 int	is_valid_path(t_map *map)
 {
 	t_map	temp;
 
 	copy_game(map, &temp);
-	if (path(&temp, temp.player_y, temp.player_x))
+/* 	if (path(&temp, temp.player_y, temp.player_x))
 	{
 		if (temp.player_x == temp.width - 1)
 		{
 			return (1);
 		}
-	}
+	} */
 	print_map(temp);
 	return (0);
 }
