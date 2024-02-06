@@ -6,21 +6,22 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:17:28 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/06 12:16:16 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:37:32 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void init_window(t_map *map)
+void	init_window(t_map *map)
 {
 	map->vars.mlx = mlx_init();
 	map->vars.win = mlx_new_window(map->vars.mlx, WIDTH, HEIGHT, "Cube3D");
 	map->image.img = mlx_new_image(map->vars.mlx, WIDTH, HEIGHT);
-	map->image.address = mlx_get_data_addr(map->image.img, &map->image.bitxpixel, &map->image.line_len, &map->image.endian);
+	map->image.address = mlx_get_data_addr(map->image.img,
+			&map->image.bitxpixel, &map->image.line_len, &map->image.endian);
 }
 
-void init_map(t_map *map)
+void	init_map(t_map *map)
 {
 	map->height = 0;
 	map->north_set = 0;
@@ -141,7 +142,8 @@ void init_map(t_map *map)
 // 	else
 // 	{
 // 		ray->step_x = 1;
-// 		ray->side_dist_x = (ray->map_x + 1.0 - player->pos_x) * ray->delta_dist_x;
+// 		ray->side_dist_x = (ray->map_x + 1.0 - player->pos_x)
+			//* ray->delta_dist_x;
 // 	}
 // 	if (ray->dir_y < 0)
 // 	{
@@ -151,7 +153,8 @@ void init_map(t_map *map)
 // 	else
 // 	{
 // 		ray->step_y = 1;
-// 		ray->side_dist_y = (ray->map_y + 1.0 - player->pos_y) * ray->delta_dist_y;
+// 		ray->side_dist_y = (ray->map_y + 1.0 - player->pos_y)
+			//* ray->delta_dist_y;
 // 	}
 // }
 
@@ -220,19 +223,22 @@ void init_map(t_map *map)
 // 	int	color;
 // 	(void)x;
 // 	texure->x = (int)(ray->wall_x * (double)texure->size);
-// 	if ((ray->side == 0 && ray->dir_x > 0) || (ray->side == 1 && ray->dir_y < 0))
+// 	if ((ray->side == 0 && ray->dir_x > 0) || (ray->side == 1
+		//	&& ray->dir_y < 0))
 // 		texure->x = texure->size - texure->x - 1;
 // 	texure->step = 1.0 * texure->size / ray->line_height;
-// 	texure->pos = (ray->draw_start - HEIGHT / 2 + ray->line_height / 2) * texure->step;
+// 	texure->pos = (ray->draw_start - HEIGHT / 2 + ray->line_height / 2)
+	//	* texure->step;
 // 	y = ray->draw_start;
 // 	while (y < ray->draw_end)
 // 	{
 // 		texure->y = (int)texure->pos & (texure->size - 1);
 // 		texure->pos += texure->step;
-// 		color = map->textures[texure->index][texure->size * texure->y + texure->y];
+// 		color = map->textures[texure->index][texure->size * texure->y
+		//	+ texure->y];
 // 		if (texure->index == 0 || texure->index == 3)
 // 			color = (color >> 1) & 8355711;
-		
+
 // 	}
 // }
 
@@ -252,9 +258,10 @@ void init_map(t_map *map)
 // 	}
 // }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	t_map *map;
+	t_map	*map;
+
 	map = malloc(sizeof(t_map));
 	if (!map)
 		return (3);

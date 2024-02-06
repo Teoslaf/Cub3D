@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:07:52 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/06 15:07:30 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:33:06 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void	fill(char c, int *j, int **format, t_map *map)
 	}
 }
 
-static int	fill_color_arr(char *line,  int **format, t_map *map)
+static int	fill_color_arr(char *line, int **format, t_map *map)
 {
 	int	i;
 	int	j;
@@ -61,7 +61,9 @@ static int	fill_color_arr(char *line,  int **format, t_map *map)
 	{
 		if ((line[i] == 'F' || line[i] == 'C') && i == 0)
 			fill(line[i], &j, format, map);
-		else if ((ft_isdigit(line[i]) || ((line[i] == '-' || line[i] == '+') && ft_isdigit(line[i + 1]))) && i != 0 && ((*format)[j] == F || (*format)[j] == C || (*format)[j] == COMMA))
+		else if ((ft_isdigit(line[i]) || ((line[i] == '-' || line[i] == '+')
+					&& ft_isdigit(line[i + 1]))) && i != 0 && ((*format)[j] == F
+				|| (*format)[j] == C || (*format)[j] == COMMA))
 		{
 			fill_nums(&i, &j, line, map);
 			(*format)[j] = NUM;
@@ -104,7 +106,9 @@ static int	fill_color_arr(char *line,  int **format, t_map *map)
 		}
 		i++;
 	}
-	if (j != 5 || ((*format)[0] != F && (*format)[0] != C) || (*format)[1] != NUM || (*format)[2] != COMMA || (*format)[3] != NUM || (*format)[4] != COMMA || (*format)[5] != NUM)
+	if (j != 5 || ((*format)[0] != F && (*format)[0] != C)
+		|| (*format)[1] != NUM || (*format)[2] != COMMA || (*format)[3] != NUM
+		|| (*format)[4] != COMMA || (*format)[5] != NUM)
 	{
 		if (line[0] == 'F')
 		{
@@ -137,7 +141,8 @@ int	get_color(char *line, t_map *map)
 {
 	int	*format;
 
-	if ((line[0] == 'F' && map->floor_set) || (line[0] == 'C' && map->ceiling_set))
+	if ((line[0] == 'F' && map->floor_set) || (line[0] == 'C'
+			&& map->ceiling_set))
 		return (1);
 	if (line[1] != ' ' && line[1] != '\t')
 		return (2);
@@ -179,10 +184,10 @@ int	get_color(char *line, t_map *map)
 
 int	get_texture(char *line, t_map *map)
 {
-	int		i;
-	int		j;
-	int		start;
-	char	**format;
+	int i;
+	int j;
+	int start;
+	char **format;
 
 	if (!ft_strncmp(line, "NO", 2) && map->north_set)
 		return (1);
@@ -203,7 +208,8 @@ int	get_texture(char *line, t_map *map)
 		if (ft_isalpha(line[i]))
 		{
 			start = i;
-			while (line[i] && (ft_isalnum(line[i]) || line[i] == '_' || line[i] == '.' || line[i] == '-' || line[i] == '/'))
+			while (line[i] && (ft_isalnum(line[i]) || line[i] == '_'
+					|| line[i] == '.' || line[i] == '-' || line[i] == '/'))
 				i++;
 			format[++j] = ft_substr(line, start, i - start);
 			i--;
@@ -212,7 +218,8 @@ int	get_texture(char *line, t_map *map)
 		{
 			start = i;
 			i += 2;
-			while (line[i] && (ft_isalnum(line[i]) || line[i] == '_' || line[i] == '-'  || line[i] == '.' || line[i] == '/'))
+			while (line[i] && (ft_isalnum(line[i]) || line[i] == '_'
+					|| line[i] == '-' || line[i] == '.' || line[i] == '/'))
 				i++;
 			format[++j] = ft_substr(line, start, i - start);
 			i--;
@@ -228,16 +235,17 @@ int	get_texture(char *line, t_map *map)
 		i++;
 	}
 	format[++j] = 0;
-	    if (format[1]) {
-        // Check texture extension
-        if (check_texture_extension(format[1]) != 0) {
-            i = -1;
-            while (format[++i])
-                free(format[i]);
-            free(format);
-            return 3; // Invalid texture extension
-        }
+	if (format[1])
+	{
+		if (check_texture_extension(format[1]) != 0)
+		{
+			i = -1;
+			while (format[++i])
+				free(format[i]);
+			free(format);
+			return (3);
 		}
+	}
 	if (format[1])
 	{
 		if (!ft_strncmp(format[0], "NO", 2))

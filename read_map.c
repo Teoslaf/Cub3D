@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/06 14:51:23 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/06 15:42:24 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,7 +304,7 @@ int read_map(char *map_file, t_map *map)
 		i++;
 	}
 	replace_tab_to_space(map->map);
-	if (checkSize(map) == 1 && printf("less then 3x3 \n"))
+	if (check_size(map) == 1 && printf("less then 3x3 \n"))
 		return (1);
 	if (check_player(map) == -1 && printf("player err \n"))
 		return (1);
