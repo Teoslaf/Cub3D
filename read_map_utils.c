@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:07:52 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/24 13:55:00 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/02/06 15:07:30 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,6 +228,16 @@ int	get_texture(char *line, t_map *map)
 		i++;
 	}
 	format[++j] = 0;
+	    if (format[1]) {
+        // Check texture extension
+        if (check_texture_extension(format[1]) != 0) {
+            i = -1;
+            while (format[++i])
+                free(format[i]);
+            free(format);
+            return 3; // Invalid texture extension
+        }
+		}
 	if (format[1])
 	{
 		if (!ft_strncmp(format[0], "NO", 2))

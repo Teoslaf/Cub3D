@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/31 16:28:51 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/02/06 14:51:23 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static int get_map_height(char *map_file, t_map *map)
 			i++;
 		if ((line[i] == '0' || line[i] == '1') || ((line[i] == 'S' || line[i] == 'N' || line[i] == 'W' || line[i] == 'E') && (line[i + 1] == '0' || line[i + 1] == '1')))
 		{
-			printf("line stopped: %s\n", line);
+			// printf("line stopped: %s\n", line);
 			break;
 		}
 		row++;
@@ -64,7 +64,7 @@ static int get_map_height(char *map_file, t_map *map)
 	while (line)
 	{
 	
-		printf("line go on: %s\n", line);
+		// printf("line go on: %s\n", line);
 		i = 0;
 		while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 			i++;
@@ -79,8 +79,8 @@ static int get_map_height(char *map_file, t_map *map)
 		line = get_next_line(fd);
 	}
 	map->map_start = row - height;
-	printf("map start: %d\n", map->map_start);
-	printf("height: %d\n", height);
+	// printf("map start: %d\n", map->map_start);
+	// printf("height: %d\n", height);
 	close(fd);
 	return (height);
 }
@@ -104,8 +104,8 @@ static int get_map_line_width(char *map_file, t_map *map)
 		j = 0;
 		while (line[j] && (line[j] == ' ' || line[j] == '\t'))
 			j++;
-		printf("line 1: %s\n", line + j);
-		printf("i: %d\n", i);
+		// printf("line 1: %s\n", line + j);
+		// printf("i: %d\n", i);
 		if ((line + j)[0] == 'F' || (line + j)[0] == 'C')
 		{
 			int val = get_color(line + j, map);
@@ -139,7 +139,7 @@ static int get_map_line_width(char *map_file, t_map *map)
 	i = 0;
 	while (line && i < map->height)
 	{
-		printf("line 2: %s\n", line);
+		// printf("line 2: %s\n", line);
 		if (!is_map_line(line) && printf("Extra info on map\n"))
 		{
 			if (row >= 1)
@@ -147,17 +147,19 @@ static int get_map_line_width(char *map_file, t_map *map)
 			return (free(line), 1);
 		}
 		map->map[row] = ft_strdup(line);
+		// printf("map line: %s", map->map[row]);
 		row++;
 		i++;
 		free(line);
 		line = get_next_line(fd);
 	}
+
 	while (line)
 	{
 		i = 0;
 		while (line[i] && (line[i] == '\t' || line[i] == ' '))
 			i++;
-		printf("line 3: %s\n", line + i);
+		// printf("line 3: %s\n", line + i);
 		if (ft_isprint(line[i]) && (line[i] != '\n' && line[i] != '\t' && line[i] != ' ') && printf("Map should always be last!\n"))
 		{
 			if (row >= 1)
@@ -210,7 +212,7 @@ char	*replace(char *line, int tabs)
 
 	len = (tabs * 4) + ft_strlen(line) - tabs - 1;
 	// printf("len: %d\n", len);
-	new_line = malloc(sizeof(char) * len);
+	new_line = malloc(sizeof(char) * len + 2);
 	if (!new_line)
 		return (NULL);
 	i = 0;
@@ -232,6 +234,7 @@ char	*replace(char *line, int tabs)
 		j++;
 	}
 	new_line[i] = '\0';
+	free(line);
 	// printf("new line: %s\n", new_line);
 	return (new_line);
 }
@@ -261,7 +264,8 @@ int read_map(char *map_file, t_map *map)
 		map->map = NULL;
 		return (1);
 	}
-	check_file_extension(map_file);
+	if(check_file_extension(map_file) == 1)
+		return 1;
 	map->height = get_map_height(map_file, map);
 	if (map->height == 0 && printf("Empty Map!\n"))
 		return (1);
@@ -269,7 +273,7 @@ int read_map(char *map_file, t_map *map)
 	if (!map->map && printf("Map allocation failed!\n"))
 		return (1);
 	int val = get_map_line_width(map_file, map);
-	printf("val returned: %d\n", val);
+	// printf("val returned: %d\n", val);
 	int i = 0;
 	if (val)
 	{

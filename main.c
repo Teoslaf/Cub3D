@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:17:28 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/06 10:34:19 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/02/06 12:16:16 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,6 @@ void init_map(t_map *map)
 int main(int argc, char **argv)
 {
 	t_map *map;
-
 	map = malloc(sizeof(t_map));
 	if (!map)
 		return (3);
@@ -278,7 +277,11 @@ int main(int argc, char **argv)
 	// render(map);
 	// init_hooks(map);
 	// mlx_loop(map->vars.mlx);
-
+	// for(int i=0; i<map->height; i++)
+	// {
+	// 	free(map->map[i]);
+	// }
 	free_map(map);
+	free(map);
 	return (0);
 }

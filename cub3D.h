@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:18:49 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/05 15:13:59 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/02/06 14:59:08 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,10 +141,12 @@ int get_pos_by_char(t_map *map, char c, char search_char);
 int checkSize(t_map *map);
 int check_player(t_map *map);
 int empty_map(char *map_file);
-void check_file_extension(char *file);
+int check_file_extension(char *file);
+int	check_texture_extension(char *file);
 
 void free_map(t_map *map);
 void print_map(t_map map);
+void	free_map_double(t_map *map);
 
 // HOOK FUNCTIONS
 int handle_key_down(int key, t_map *map);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 15:57:50 by cdurro            #+#    #+#             */
-/*   Updated: 2024/01/24 14:32:14 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/02/06 12:16:13 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,13 @@ void	free_map(t_map *map)
 	{
 		i = 0;
 		while (i < map->height)
-			free(map->map[i++]);
+		{
+			free(map->map[i]);
+			i++;
+		}
 	}
+			// printf("map line: %s\n", map->map[0]);
+	
 	if (map->map)
 		free(map->map);
 }
@@ -54,6 +59,17 @@ void	free_int_arr(int *arr)
 
 	i = 0;
 	// while (arr[++i])
-		// free(arr[i]);
+	// free(arr[i]);
 	free(arr);
+}
+
+void	free_map_double(t_map *map)
+{
+	int i = 0;
+	while (i < map->height)
+	{
+		free(map->map[i]);
+		i++;
+	}
+	free(map->map);
 }
