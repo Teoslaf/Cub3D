@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:56:50 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/06 15:58:03 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:00:54 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,7 @@ int	get_pos_by_char(t_map *map, char c, char search_char)
 {
 	int	y;
 	int	x;
-	int	i;
 
-	i = 0;
 	y = 0;
 	if (map == NULL || map->map == NULL)
 		return (0);

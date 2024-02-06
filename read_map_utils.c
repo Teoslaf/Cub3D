@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:07:52 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/06 15:33:06 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:23:51 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	fill_color_arr(char *line, int **format, t_map *map)
 			fill(line[i], &j, format, map);
 		else if ((ft_isdigit(line[i]) || ((line[i] == '-' || line[i] == '+')
 					&& ft_isdigit(line[i + 1]))) && i != 0 && ((*format)[j] == F
-				|| (*format)[j] == C || (*format)[j] == COMMA))
+			|| (*format)[j] == C || (*format)[j] == COMMA))
 		{
 			fill_nums(&i, &j, line, map);
 			(*format)[j] = NUM;
@@ -184,10 +184,10 @@ int	get_color(char *line, t_map *map)
 
 int	get_texture(char *line, t_map *map)
 {
-	int i;
-	int j;
-	int start;
-	char **format;
+	int		i;
+	int		j;
+	int		start;
+	char	**format;
 
 	if (!ft_strncmp(line, "NO", 2) && map->north_set)
 		return (1);
@@ -200,7 +200,6 @@ int	get_texture(char *line, t_map *map)
 	format = malloc(sizeof(char *) * 3);
 	if (!format)
 		return (2);
-
 	i = 0;
 	j = -1;
 	while (line[i] && line[i] != '\n')

@@ -1,5 +1,5 @@
 NAME = cub3D
-SRCS = main.c read_map.c read_map_utils.c free.c map_checks.c draw_map.c map_checks_2.c
+SRCS = main.c read_map.c read_map_utils.c free.c map_checks.c draw_map.c map_checks_2.c map_check_player.c
 
 OBJS = $(SRCS:.c=.o)
 

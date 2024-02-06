@@ -6,56 +6,11 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:22:57 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/06 15:57:24 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/06 16:44:45 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-int	check_player(t_map *map)
-{
-	int	i;
-	int	j;
-	int	direction_count[4];
-
-	direction_count[0] = 0;
-	direction_count[1] = 0;
-	direction_count[2] = 0;
-	direction_count[3] = 0;
-	i = 0;
-	while (i < map->height)
-	{
-		map->width = ft_strlen(map->map[i]);
-		j = 0;
-		while (j < map->width)
-		{
-			if (map->map[i][j] == 'N')
-				direction_count[0]++;
-			else if (map->map[i][j] == 'S')
-				direction_count[1]++;
-			else if (map->map[i][j] == 'W')
-				direction_count[2]++;
-			else if (map->map[i][j] == 'E')
-				direction_count[3]++;
-			j++;
-		}
-		i++;
-	}
-	if (direction_count[0] == 1 && direction_count[1] == 0
-		&& direction_count[2] == 0 && direction_count[3] == 0)
-		return (1);
-	else if (direction_count[0] == 0 && direction_count[1] == 1
-		&& direction_count[2] == 0 && direction_count[3] == 0)
-		return (2);
-	else if (direction_count[0] == 0 && direction_count[1] == 0
-		&& direction_count[2] == 1 && direction_count[3] == 0)
-		return (3);
-	else if (direction_count[0] == 0 && direction_count[1] == 0
-		&& direction_count[2] == 0 && direction_count[3] == 1)
-		return (4);
-	else
-		return (-1);
-}
 
 void	check_cords(t_map *map)
 {
@@ -107,62 +62,48 @@ void	copy_game(t_map *source, t_map *destination)
 	}
 }
 
+int	is_valid_poss(t_map *temp, int y, int x)
+{
+	if (x == 0 || y == 0 || temp->player_x >= temp->width - 1
+		|| temp->player_y >= temp->height - 1)
+		return (-1);
+	if (y == 0 || y == temp->height - 1 || x == 0 || x == temp->width - 1)
+		return (-1);
+	if (temp->map[y][x + 1] == ' ' || temp->map[y][x - 1] == ' ' || temp->map[y
+		- 1][x] == ' ' || temp->map[y + 1][x] == ' ')
+		return (-1);
+	else if (temp->map[y][x + 1] == '\t' || temp->map[y][x - 1] == '\t'
+		|| temp->map[y - 1][x] == '\t' || temp->map[y + 1][x] == '\t')
+		return (-1);
+	else if (temp->map[y][x + 1] == '\n' || temp->map[y][x - 1] == '\n'
+		|| temp->map[y - 1][x] == '\n' || temp->map[y + 1][x] == '\n')
+	{
+		if (!temp->map[y - 1][x] || temp->map[y - 1][x] == '\n')
+			return (-1);
+		if (!temp->map[y + 1][x] || temp->map[y + 1][x] == '\n')
+			return (-1);
+		else if ((temp->map[y][x - 1] == '\n' || temp->map[y][x + 1] == '\n'))
+			return (-1);
+	}
+	return (0);
+}
+
 int	path(t_map *temp, int y, int x)
 {
 	temp->width = (int)ft_strlen(temp->map[temp->player_y]) - 1;
 	if (y < 0 || x < 0 || y >= temp->height || x >= (int)ft_strlen(temp->map[y])
 		- 1)
-	{
 		return (0);
-	}
 	if (temp->map[y][x] == '1')
-	{
 		return (0);
-	}
-	if (temp->map[y][x] == '0' || temp->map[y][x] == 'S'
-		|| temp->map[y][x] == 'N' || temp->map[y][x] == 'W'
-		|| temp->map[y][x] == 'E')
-	{
-		if (x == 0 || y == 0 || temp->player_x >= temp->width - 1
-			|| temp->player_y >= temp->height - 1)
-		{
-			printf("on edge\n");
-			return (-1);
-		}
-		if (y == 0 || y == temp->height - 1 || x == 0 || x == temp->width - 1)
-		{
-			printf("on edge\n");
-			return (-1);
-		}
-		if ((temp->map[y][x + 1] == ' ' || temp->map[y][x - 1] == ' '
-				|| temp->map[y - 1][x] == ' ' || temp->map[y + 1][x] == ' '))
-		{
-			printf("space \n");
-			return (-1);
-		}
-		else if ((temp->map[y][x + 1] == '\t' || temp->map[y][x - 1] == '\t'
-				|| temp->map[y - 1][x] == '\t' || temp->map[y + 1][x] == '\t'))
-		{
-			printf("tab \n");
-			return (-1);
-		}
-		else if ((temp->map[y][x + 1] == '\n' || temp->map[y][x - 1] == '\n'
-				|| temp->map[y - 1][x] == '\n' || temp->map[y + 1][x] == '\n'))
-		{
-			if ((!temp->map[y - 1][x] || temp->map[y - 1][x] == '\n')
-				&& printf("GOT 1\n"))
-				return (-1);
-			if ((!temp->map[y + 1][x] || temp->map[y + 1][x] == '\n')
-				&& printf("GOT 2\n"))
-				return (-1);
-			else if ((temp->map[y][x - 1] == '\n' || temp->map[y][x
-				+ 1] == '\n') && (printf("wall hole east\n")))
-				return (-1);
-		}
-	}
 	temp->map[y][x] = '1';
 	if (y == temp->height - 1 && x == (int)ft_strlen(temp->map[y]) - 1)
 		return (1);
+	if (is_valid_poss(temp, y, x) == -1)
+	{
+		printf("not surrounded  by walls, etc \n");
+		return (-1);
+	}
 	if (path(temp, y, x + 1))
 		return (1);
 	if (path(temp, y, x - 1))
