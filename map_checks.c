@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_checks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:22:57 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/01/24 16:13:06 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/06 10:38:07 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ int	checkSize(t_map *map)
 	i = 0;
 	while (i < map->height)
 	{
-		if (map->map[i] == NULL || strlen(map->map[i]) < 3)
+		// printf("map line: %s\n", map->map[i]);
+		if (strlen(map->map[i]) < 3)
 			return (1);
 		i++;
 	}
@@ -113,7 +114,7 @@ int	get_pos_by_char(t_map *map, char c, char search_char)
 		return (0);
 	while (y < map->height)
 	{
-		map->width = ft_strlen(map->map[i]);
+		map->width = ft_strlen(map->map[y]) + 1;
 		x = 0;
 		while (x < map->width)
 		{
@@ -183,36 +184,61 @@ void	copy_game(t_map *source, t_map *destination)
 
 int	path(t_map *temp, int y, int x)
 {
-	// printf("x cords = %zu, y cords = %zu \n", x, y);
-	if (y >= temp->height || x >= (int)ft_strlen(temp->map[y]))
+	temp->width = (int)ft_strlen(temp->map[temp->player_y]) - 1;
+	printf("x cord: %d | y cord: %d\n", x, y);
+	printf("line width: %d\n", temp->width);
+	printf("line checking: %s\n", temp->map[y]);
+	if (y < 0 || x < 0 || y >= temp->height || x >= (int)ft_strlen(temp->map[y]) - 1)
 	{
+		printf("HEY 1");
 		return (0);
 	}
 	if (temp->map[y][x] == '1')
 	{
+		printf("HEY 2");
 		return (0);
 	}
-	if (temp->map[y][x] == '0')
+	if (temp->map[y][x] == '0' || temp->map[y][x] == 'S' || temp->map[y][x] == 'N' || temp->map[y][x] == 'W' || temp->map[y][x] == 'E')
 	{
-		if (temp->map[y][x + 1] == ' ' || temp->map[y][x - 1] == ' '
-			|| temp->map[y - 1][x] == ' ' || temp->map[y + 1][x] == ' ')
+		// if (printf("HEY 6\n") && (!temp->map[y][x + 1] || !temp->map[y][x - 1]
+		// 		|| !temp->map[y - 1][x] || !temp->map[y + 1][x]))
+		// {
+		// 	printf("on edge\n");
+		// 	return (-1);
+		// }
+		// CHECK THIS
+		printf("GOT HERE FOR: %c\n", temp->map[y][x]);
+		printf("player x = %d | temp->width = %d | y + 1 = %d | temp->height = %d\n", temp->player_x, temp->width, temp->player_y, temp->height);
+		if (x == 0 || y == 0 || temp->player_x >= temp->width - 1|| temp->player_y >= temp->height - 1)
+		{
+			printf("on edge\n");
+			return (-1);
+		}
+		if (printf("HEY 3\n") && (temp->map[y][x + 1] == ' ' || temp->map[y][x - 1] == ' '
+			|| temp->map[y - 1][x] == ' ' || temp->map[y + 1][x] == ' '))
 		{
 			printf("space \n");
 			return(-1);
 		}
-		else if ((temp->map[y][x + 1] == '\t' || temp->map[y][x - 1] == '\t'
+		else if (printf("HEY 4\n") && (temp->map[y][x + 1] == '\t' || temp->map[y][x - 1] == '\t'
 				|| temp->map[y - 1][x] == '\t' || temp->map[y + 1][x] == '\t'))
 		{
 			printf("tab \n");
 			return(-1);
 		}
-		else if ((temp->map[y][x + 1] == '\n' || temp->map[y][x - 1] == '\n'
+		else if (printf("HEY 5\n") && (temp->map[y][x + 1] == '\n' || temp->map[y][x - 1] == '\n'
 				|| temp->map[y - 1][x] == '\n' || temp->map[y + 1][x] == '\n'))
 		{
-			printf("new line \n");
-			return(-1);
+			printf("new line\n");
+			if ((!temp->map[y - 1][x] || temp->map[y - 1][x] == '\n') && printf("GOT 1\n"))
+				return (-1);
+			if ((!temp->map[y + 1][x] || temp->map[y + 1][x] == '\n') && printf("GOT 2\n"))
+				return (-1);
+			else if ((temp->map[y][x - 1] == '\n' || temp->map[y][x + 1] == '\n') && (printf("GOT 2\n")))
+				return(-1);
 		}
 	}
+	
 	temp->map[y][x] = '1';
 	if (y == temp->height - 1 && x == (int)ft_strlen(temp->map[y]) - 1)
 		return (1);
@@ -223,15 +249,7 @@ int	path(t_map *temp, int y, int x)
 	if (path(temp, y + 1, x))
 		return (1);
 	if (path(temp, y - 1, x))
-		return (1);
-	if (path(temp, y + 1, x + 1))
-		return (1);
-	if (path(temp, y + 1, x - 1))
-		return (1);
-	if (path(temp, y - 1, x + 1))
-		return (1);
-	if (path(temp, y - 1, x - 1))
-		return (1);
+		return(1);
 	return (0);
 }
 
@@ -242,11 +260,10 @@ int	is_valid_path(t_map *map)
 	copy_game(map, &temp);
 	if (path(&temp, temp.player_y, temp.player_x))
 	{
-		if (temp.player_x == temp.width - 1)
-			return (1);
+		return (1);
 	}
-		// print_map(*map);
-		// printf("===========================================\n");
-		// print_map(temp);
+		print_map(*map);
+		printf("===========================================\n");
+		print_map(temp);
 	return (0);
 }
