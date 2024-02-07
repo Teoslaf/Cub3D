@@ -6,39 +6,44 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/06 15:42:24 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/07 11:49:46 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-static int is_map_line(char *line)
+static int	is_map_line(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (line[0] == '\n')
+	{
+		printf("here\n");
 		return (0);
+	}
 	while (line[i] && (line[i] == '\t' || line[i] == ' '))
 		i++;
 	if (line[i] == '\n')
 		return (0);
 	while (line[i] && line[i] != '\n')
 	{
-		if (line[i] != '0' && line[i] != '1' && line[i] != 'N' && line[i] != 'S' && line[i] != 'E' && line[i] != 'W' && line[i] != '\t' && line[i] != ' ')
+		if (line[i] != '0' && line[i] != '1' && line[i] != 'N' && line[i] != 'S'
+			&& line[i] != 'E' && line[i] != 'W' && line[i] != '\t'
+			&& line[i] != ' ')
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-static int get_map_height(char *map_file, t_map *map)
+static int	get_map_height(char *map_file, t_map *map)
 {
-	int height;
-	int fd;
-	int i;
-	int row;
-	char *line;
+	int		height;
+	int		fd;
+	int		i;
+	int		row;
+	char	*line;
 
 	fd = open(map_file, O_RDONLY);
 	if (fd == -1)
@@ -51,10 +56,12 @@ static int get_map_height(char *map_file, t_map *map)
 		i = 0;
 		while (line[i] && (line[i] == ' ' || line[i] == '\t'))
 			i++;
-		if ((line[i] == '0' || line[i] == '1') || ((line[i] == 'S' || line[i] == 'N' || line[i] == 'W' || line[i] == 'E') && (line[i + 1] == '0' || line[i + 1] == '1')))
+		if ((line[i] == '0' || line[i] == '1') || ((line[i] == 'S'
+					|| line[i] == 'N' || line[i] == 'W' || line[i] == 'E')
+				&& (line[i + 1] == '0' || line[i + 1] == '1')))
 		{
 			// printf("line stopped: %s\n", line);
-			break;
+			break ;
 		}
 		row++;
 		free(line);
@@ -63,7 +70,6 @@ static int get_map_height(char *map_file, t_map *map)
 	// line = get_next_line(fd);
 	while (line)
 	{
-	
 		// printf("line go on: %s\n", line);
 		i = 0;
 		while (line[i] && (line[i] == ' ' || line[i] == '\t'))
@@ -71,7 +77,7 @@ static int get_map_height(char *map_file, t_map *map)
 		if (((line[0] == '\n' || line[0] == '\0')) && height > 0)
 		{
 			free(line);
-			break;
+			break ;
 		}
 		height++;
 		row++;
@@ -85,13 +91,14 @@ static int get_map_height(char *map_file, t_map *map)
 	return (height);
 }
 
-static int get_map_line_width(char *map_file, t_map *map)
+static int	get_map_line_width(char *map_file, t_map *map)
 {
-	int row;
-	int fd;
-	int i;
-	int j;
-	char *line;
+	int		row;
+	int		fd;
+	int		i;
+	int		j;
+	char	*line;
+	int		val;
 
 	fd = open(map_file, O_RDONLY);
 	if (fd == -1 && printf("Error opening the map\n"))
@@ -104,29 +111,41 @@ static int get_map_line_width(char *map_file, t_map *map)
 		j = 0;
 		while (line[j] && (line[j] == ' ' || line[j] == '\t'))
 			j++;
-		// printf("line 1: %s\n", line + j);
-		// printf("i: %d\n", i);
+		if ((line + j)[0] == '\n')
+		{
+			free(line);
+			line = get_next_line(fd);
+			row++;
+			i++;
+			continue ;
+		}
 		if ((line + j)[0] == 'F' || (line + j)[0] == 'C')
 		{
-			int val = get_color(line + j, map);
-			if ((val == 1 && printf("Too many color codes!\n")) || (val == 2 && printf("Wrong color code format!\n")) || (val == 3 && printf("Malloc error!\n")))
+			val = get_color(line + j, map);
+			if ((val == 1 && printf("Too many color codes!\n")) || (val == 2
+					&& printf("Wrong color code format!\n")) || (val == 3
+					&& printf("Malloc error!\n")))
 			{
 				if (row >= 1)
 					map->rows_set = row;
 				return (free(line), 1);
 			}
 		}
-		else if ((line + j)[0] == 'N' || (line + j)[0] == 'S' || (line + j)[0] == 'W' || (line + j)[0] == 'E')
+		else if ((line + j)[0] == 'N' || (line + j)[0] == 'S' || (line
+				+ j)[0] == 'W' || (line + j)[0] == 'E')
 		{
-			int val = get_texture(line + j, map);
-			if ((val == 1 && printf("Too many textures!\n")) || (val == 2 && printf("Malloc error!\n")) || (val == 3 && printf("Wrong texture format!\n")))
+			val = get_texture(line + j, map);
+			if ((val == 1 && printf("Too many textures!\n")) || (val == 2
+					&& printf("Malloc error!\n")) || (val == 3
+					&& printf("Wrong texture format!\n")))
 			{
 				if (row >= 1)
 					map->rows_set = row;
 				return (free(line), 1);
 			}
 		}
-		else if ((ft_isprint(line[0]) && (line[0] != '\n' || line[0] != '\0')) && printf("Extra info on map file\n"))
+		else if ((ft_isprint(line[0]) && (line[0] != '\n' || line[0] != '\0'))
+			&& printf("Extra info on map file\n"))
 		{
 			if (row >= 1)
 				map->rows_set = row;
@@ -139,28 +158,27 @@ static int get_map_line_width(char *map_file, t_map *map)
 	i = 0;
 	while (line && i < map->height)
 	{
-		// printf("line 2: %s\n", line);
 		if (!is_map_line(line) && printf("Extra info on map\n"))
 		{
 			if (row >= 1)
 				map->rows_set = row;
 			return (free(line), 1);
 		}
-		map->map[row] = ft_strdup(line);
-		// printf("map line: %s", map->map[row]);
+		map->map[i] = ft_strdup(line);
 		row++;
 		i++;
 		free(line);
 		line = get_next_line(fd);
 	}
-
+	map->map[i] = 0;
+	map->map_set = 1;
 	while (line)
 	{
 		i = 0;
 		while (line[i] && (line[i] == '\t' || line[i] == ' '))
 			i++;
-		// printf("line 3: %s\n", line + i);
-		if (ft_isprint(line[i]) && (line[i] != '\n' && line[i] != '\t' && line[i] != ' ') && printf("Map should always be last!\n"))
+		if (ft_isprint(line[i]) && (line[i] != '\n' && line[i] != '\t'
+				&& line[i] != ' ') && printf("Map should always be last!\n"))
 		{
 			if (row >= 1)
 				map->rows_set = row;
@@ -169,15 +187,13 @@ static int get_map_line_width(char *map_file, t_map *map)
 		free(line);
 		line = get_next_line(fd);
 	}
-	map->map[row] = 0;
-	map->map_set = 1;
 	close(fd);
 	return (0);
 }
 
-void print_map(t_map map)
+void	print_map(t_map map)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (map.map[i])
@@ -205,9 +221,9 @@ int	count_tabs(char *line, char c)
 
 char	*replace(char *line, int tabs)
 {
-	int	i;
-	int	j;
-	int	len;
+	int		i;
+	int		j;
+	int		len;
 	char	*new_line;
 
 	len = (tabs * 4) + ft_strlen(line) - tabs - 1;
@@ -254,7 +270,7 @@ void	replace_tab_to_space(char **map)
 	}
 }
 
-int read_map(char *map_file, t_map *map)
+int	read_map(char *map_file, t_map *map)
 {
 	int fd;
 
@@ -264,8 +280,8 @@ int read_map(char *map_file, t_map *map)
 		map->map = NULL;
 		return (1);
 	}
-	if(check_file_extension(map_file) == 1)
-		return 1;
+	if (check_file_extension(map_file) == 1)
+		return (1);
 	map->height = get_map_height(map_file, map);
 	if (map->height == 0 && printf("Empty Map!\n"))
 		return (1);
@@ -278,13 +294,16 @@ int read_map(char *map_file, t_map *map)
 	if (val)
 	{
 		int i = 0;
-
 		while (i < map->rows_set)
 			free(map->map[i++]);
-
 		return (1);
 	}
-	if ((!map->north_set && printf("No north texture found!\n")) || (!map->south_set && printf("No south texture found\n")) || (!map->west_set && printf("No west texture found!\n")) || (!map->east_set && printf("No east texture found!\n")) || (!map->floor_set && printf("No floor info found!\n")) || (!map->ceiling_set && printf("No ceiling info found!\n")))
+	if ((!map->north_set && printf("No north texture found!\n"))
+		|| (!map->south_set && printf("No south texture found\n"))
+		|| (!map->west_set && printf("No west texture found!\n"))
+		|| (!map->east_set && printf("No east texture found!\n"))
+		|| (!map->floor_set && printf("No floor info found!\n"))
+		|| (!map->ceiling_set && printf("No ceiling info found!\n")))
 		return (1);
 	// int i;
 	i = 0;
@@ -312,7 +331,7 @@ int read_map(char *map_file, t_map *map)
 	if (map->map && map->player_y < map->height && map->player_x < map->width)
 		map->player_char = map->map[map->player_y][map->player_x];
 	if (is_valid_path(map) == 1)
-		return 1;
+		return (1);
 	close(fd);
 	// i = -1;
 	// printf("FLOOR: ");
