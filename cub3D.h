@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:18:49 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/06 15:42:19 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/07 15:49:33 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,14 @@
 # define NUM 3
 # define COMMA 4
 # define WIDTH 1280
-# define HEIGHT 1024
+# define HEIGHT 640
 # define ESC 65307
+# define A 97
+# define S 115
+# define W 119
+# define D 100
+#define PI 3.1415926535
+
 
 typedef struct s_ray
 {
@@ -152,5 +158,7 @@ void				free_map_double(t_map *map);
 int					handle_key_down(int key, t_map *map);
 int					close_window(t_map *map);
 int					draw_map(t_map *map);
-
+int	handle_key_down(int key, t_map *map);
+void	minimap(t_map *map);
+void draw_line(t_map *map, int x1, int y1, double angle);
 #endif

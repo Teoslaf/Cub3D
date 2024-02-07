@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   draw_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 11:24:18 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/01 12:58:08 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/02/07 15:45:56 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
 
-void DDA(int X0, int Y0, int X1, int Y1, t_map *map) 
+/* void DDA(int X0, int Y0, int X1, int Y1, t_map *map) 
 { 
     // calculate dx & dy 
     int dx = X1 - X0; 
@@ -42,4 +42,4 @@ int	draw_map(t_map *map)
 {
 	DDA(1, 1, 4, 4, map);
 	return (0);
-}
+} */

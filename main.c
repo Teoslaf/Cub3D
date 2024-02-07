@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:17:28 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/06 15:37:32 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/07 15:49:41 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,28 +45,18 @@ void	init_map(t_map *map)
 	map->time = 0;
 	map->old_time = 0;
 }
+int	close_window(t_map *map)
+{
+	(void)map;
+	printf("CLOSING APP\n");
+	exit(0);
+}
 
-// int handle_key_down(int key, t_map *map)
-// {
-// 	(void)map;
-// 	// printf("key pressed: %d\n", key);
-// 	if (key == ESC)
-// 		close_window(map);
-// 	return (0);
-// }
-
-// int close_window(t_map *map)
-// {
-// 	(void)map;
-// 	printf("CLOSING APP\n");
-// 	exit(0);
-// }
-
-// void init_hooks(t_map *map)
-// {
-// 	mlx_hook(map->vars.win, 2, 1L << 0, handle_key_down, map);
-// 	mlx_hook(map->vars.win, 17, 0, close_window, map);
-// }
+void	init_hooks(t_map *map)
+{
+	mlx_hook(map->vars.win, 2, 1L << 0, handle_key_down, map);
+	mlx_hook(map->vars.win, 17, 0, close_window, map);
+}
 
 // int create_trgb(int t, int r, int g, int b)
 // {
@@ -143,7 +133,7 @@ void	init_map(t_map *map)
 // 	{
 // 		ray->step_x = 1;
 // 		ray->side_dist_x = (ray->map_x + 1.0 - player->pos_x)
-			//* ray->delta_dist_x;
+//* ray->delta_dist_x;
 // 	}
 // 	if (ray->dir_y < 0)
 // 	{
@@ -154,7 +144,7 @@ void	init_map(t_map *map)
 // 	{
 // 		ray->step_y = 1;
 // 		ray->side_dist_y = (ray->map_y + 1.0 - player->pos_y)
-			//* ray->delta_dist_y;
+//* ray->delta_dist_y;
 // 	}
 // }
 
@@ -224,18 +214,18 @@ void	init_map(t_map *map)
 // 	(void)x;
 // 	texure->x = (int)(ray->wall_x * (double)texure->size);
 // 	if ((ray->side == 0 && ray->dir_x > 0) || (ray->side == 1
-		//	&& ray->dir_y < 0))
+//	&& ray->dir_y < 0))
 // 		texure->x = texure->size - texure->x - 1;
 // 	texure->step = 1.0 * texure->size / ray->line_height;
 // 	texure->pos = (ray->draw_start - HEIGHT / 2 + ray->line_height / 2)
-	//	* texure->step;
+//	* texure->step;
 // 	y = ray->draw_start;
 // 	while (y < ray->draw_end)
 // 	{
 // 		texure->y = (int)texure->pos & (texure->size - 1);
 // 		texure->pos += texure->step;
 // 		color = map->textures[texure->index][texure->size * texure->y
-		//	+ texure->y];
+//	+ texure->y];
 // 		if (texure->index == 0 || texure->index == 3)
 // 			color = (color >> 1) & 8355711;
 
@@ -257,7 +247,59 @@ void	init_map(t_map *map)
 // 		x++;
 // 	}
 // }
+void draw_square(t_map *map, int xpos, int ypos, int color) {
+    int i, j;
+    for (i = 0; i < 25; i++) {
+        for (j = 0; j < 25; j++) {
+            if (i == 0 || j == 0 || i == 24 || j == 24) {
+                mlx_pixel_put(map->vars.mlx, map->vars.win, xpos + j, ypos + i, color);
+            }
+        }
+    }
+}
 
+void	minimap(t_map *map)
+{
+	int	xpos;
+	int	ypos;
+	int	i;
+	int	j;
+
+	int x, y;
+	y = 0;
+	while (y < map->height)
+	{
+		x = 0;
+		// printf("map line %s\n", map->map[y]);
+		while (x < (int)ft_strlen(map->map[y]))
+		{
+			xpos = x * 25;
+			ypos = y * 25;
+			i = 0;
+			j = 0;
+			while (i < 25)
+			{
+				j = 0;
+				while (j < 25)
+				{
+					if (map->map[y][x] == '1')
+						mlx_pixel_put(map->vars.mlx, map->vars.win, xpos + j,
+							ypos + i, 0xf3f3f3);
+					else if (map->map[y][x] == '0')
+						mlx_pixel_put(map->vars.mlx, map->vars.win, xpos + j,
+							ypos + i, 0x00);
+					if (map->map[y][x] == map->player_char)
+						mlx_pixel_put(map->vars.mlx, map->vars.win, xpos  + j,
+							ypos + i, 0xcc0000);
+					j++;
+				}
+				i++;
+			}
+			x++;
+		}
+		y++;
+	}
+}
 int	main(int argc, char **argv)
 {
 	t_map	*map;
@@ -273,22 +315,27 @@ int	main(int argc, char **argv)
 	if (read_map(argv[1], map))
 		printf("Error opening the map\n");
 	else
+	{
 		printf("Valid Map\n");
-	// print_map(map);
-	// printf("%s\n", map.map[14]);
-	// draw_map(map);
-	// init_window(map);
-	// init_texture(&map->texture);
-	// init_textures(map->textures);
-	// init_ray(&map->ray);
-	// render(map);
-	// init_hooks(map);
-	// mlx_loop(map->vars.mlx);
-	// for(int i=0; i<map->height; i++)
-	// {
-	// 	free(map->map[i]);
-	// }
-	free_map(map);
-	free(map);
+		mlx_init();
+		// print_map(map);
+		// printf("%s\n", map.map[14]);
+		// draw_map(map);
+		init_window(map);
+		// init_texture(&map->texture);
+		// init_textures(map->textures);
+		// init_ray(&map->ray);
+		// render(map);
+		init_hooks(map);
+		minimap(map);
+		// draw_line(map, 100, 100, 200, 200);
+		mlx_loop(map->vars.mlx);
+		// for(int i=0; i<map->height; i++)
+		// {
+		// 	free(map->map[i]);
+		// }
+		free_map(map);
+		free(map);
+	}
 	return (0);
 }

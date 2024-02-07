@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/24 15:22:57 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/07 11:34:24 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/07 15:30:01 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,14 @@ int	is_valid_poss(t_map *temp, int y, int x)
 	if (x == 0 || y == 0 || temp->player_x >= temp->width - 1
 		|| temp->player_y >= temp->height - 1)
 		return (-1);
-	if (y == 0 || y == temp->height - 1 || x == 0 || x == temp->width - 1)
+	if (y == 0 || y == temp->height - 1 || x == 0 || x == (int)ft_strlen(temp->map[y]) - 1)
 		return (-1);
 	if (temp->map[y][x + 1] == ' ' || temp->map[y][x - 1] == ' ' || temp->map[y
 		- 1][x] == ' ' || temp->map[y + 1][x] == ' ')
-		return (-1);
+			printf("here 3");
 	else if (temp->map[y][x + 1] == '\t' || temp->map[y][x - 1] == '\t'
 		|| temp->map[y - 1][x] == '\t' || temp->map[y + 1][x] == '\t')
-		return (-1);
+			printf("here 4");
 	else if (temp->map[y][x + 1] == '\n' || temp->map[y][x - 1] == '\n'
 		|| temp->map[y - 1][x] == '\n' || temp->map[y + 1][x] == '\n')
 	{
