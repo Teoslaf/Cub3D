@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:18:49 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/07 15:49:33 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/08 13:12:49 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@
 # define S 115
 # define W 119
 # define D 100
+#define LEFT_ARROW 65361
+#define UP_ARROW 65362
+#define RIGHT_ARROW 65363
+#define DOWN_ARROW 65364
 #define PI 3.1415926535
 
 
@@ -129,6 +133,7 @@ typedef struct s_map
 	char			*west;
 	char			*east;
 	char			**map;
+	double			angle;
 	t_player		player;
 	t_texture		texture;
 	t_image			image;
@@ -160,5 +165,7 @@ int					close_window(t_map *map);
 int					draw_map(t_map *map);
 int	handle_key_down(int key, t_map *map);
 void	minimap(t_map *map);
-void draw_line(t_map *map, int x1, int y1, double angle);
+void draw_line(t_map *map, int square_x, int square_y, double angle, int color);
+void	draw_square(t_map *map, int xpos, int ypos, int color);
+
 #endif

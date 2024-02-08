@@ -6,12 +6,11 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:52:09 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/07 15:53:17 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/08 13:15:40 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
 
 void	redraw_map(t_map *map)
 {
@@ -19,34 +18,101 @@ void	redraw_map(t_map *map)
 	minimap(map);
 }
 
-t_map	*move_player(t_map *map, int dx, int dy)
+t_map	*moves_up(t_map *map)
 {
-	int	new_x;
-	int	new_y;
-
-	new_x = map->player_x + dx;
-	new_y = map->player_y + dy;
-	if (map->map[new_y][new_x] == '0')
+	if (map->map[map->player_y - 1][map->player_x] == '0')
 	{
-		map->map[new_y][new_x] = map->player_char;
+		map->map[map->player_y - 1][map->player_x] = map->player_char;
 		map->map[map->player_y][map->player_x] = '0';
-		map->player_x = new_x;
-		map->player_y = new_y;
+		map->player_y -= 1;
 	}
 	return (map);
+}
+
+t_map	*moves_down(t_map *map)
+{
+	if (map->map[map->player_y + 1][map->player_x] == '0')
+	{
+		map->map[map->player_y + 1][map->player_x] = map->player_char;
+		map->map[map->player_y][map->player_x] = '0';
+		map->player_y += 1;
+	}
+	return (map);
+}
+
+t_map	*moves_left(t_map *map)
+{
+	if (map->map[map->player_y][map->player_x - 1] == '0')
+	{
+		map->map[map->player_y][map->player_x - 1] = map->player_char;
+		map->map[map->player_y][map->player_x] = '0';
+		map->player_x -= 1;
+	}
+	return (map);
+}
+
+t_map	*moves_right(t_map *map)
+{
+	if (map->map[map->player_y][map->player_x + 1] == '0')
+	{
+		map->map[map->player_y][map->player_x + 1] = map->player_char;
+		map->map[map->player_y][map->player_x] = '0';
+		map->player_x += 1;
+	}
+	return (map);
+}
+
+int	handle_arrow_down(int key, t_map *map)
+{
+	if (key == UP_ARROW)
+	{
+		// moves_up(map);
+		redraw_map(map);
+	}
+	if (key == DOWN_ARROW)
+	{
+		// moves_down(map);
+		redraw_map(map);
+	}
+	if (key == LEFT_ARROW)
+	{
+		// moves_left(map);
+		map->angle -= 0.1;
+		redraw_map(map);
+	}
+	if (key == RIGHT_ARROW)
+	{
+		// moves_right(map);
+		map->angle += 0.1;
+		redraw_map(map);
+	}
+	return (0);
 }
 
 int	handle_key_down(int key, t_map *map)
 {
 	if (key == ESC)
 		close_window(map);
-	else if (key == W)
-		move_player(map, 0, -1);
-	else if (key == S)
-		move_player(map, 0, 1);
-	else if (key == A)
-		move_player(map, -1, 0);
-	else if (key == D)
-		move_player(map, 1, 0);
+	if (key == W)
+	{
+		moves_up(map);
+		redraw_map(map);
+	}
+	if (key == S)
+	{
+		moves_down(map);
+		redraw_map(map);
+	}
+	if (key == A)
+	{
+		moves_left(map);
+		redraw_map(map);
+	}
+	if (key == D)
+	{
+		moves_right(map);
+		redraw_map(map);
+	}
+	handle_arrow_down(key, map);
 	return (0);
 }
