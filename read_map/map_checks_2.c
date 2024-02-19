@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map_checks_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:56:50 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/06 16:00:54 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:59:33 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../cub3D.h"
 
 int	check_file_extension(char *file)
 {
@@ -25,14 +25,19 @@ int	check_file_extension(char *file)
 	return (0);
 }
 
-int	check_texture_extension(char *file)
+int	check_texture_extension(char *file, char **format)
 {
+	int	i;
 	int	len;
 
 	len = ft_strlen(file);
 	if (len < 5 || ft_strncmp(file + len - 4, ".xpm", 4))
 	{
 		printf("give a bratan .xpm file.\n");
+		i = -1;
+		while (format[++i])
+			free(format[i]);
+		free(format);
 		return (1);
 	}
 	return (0);

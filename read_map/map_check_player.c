@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   map_check_player.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 16:04:07 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/06 16:07:30 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/07 16:14:51 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "../cub3D.h"
 
 void	count_directions(t_map *map, int *direction_count)
 {

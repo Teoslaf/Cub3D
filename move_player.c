@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:52:09 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/08 13:15:40 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:00:45 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,105 +14,64 @@
 
 void	redraw_map(t_map *map)
 {
-	mlx_clear_window(map->vars.mlx, map->vars.win);
-	minimap(map);
-}
-
-t_map	*moves_up(t_map *map)
-{
-	if (map->map[map->player_y - 1][map->player_x] == '0')
-	{
-		map->map[map->player_y - 1][map->player_x] = map->player_char;
-		map->map[map->player_y][map->player_x] = '0';
-		map->player_y -= 1;
-	}
-	return (map);
-}
-
-t_map	*moves_down(t_map *map)
-{
-	if (map->map[map->player_y + 1][map->player_x] == '0')
-	{
-		map->map[map->player_y + 1][map->player_x] = map->player_char;
-		map->map[map->player_y][map->player_x] = '0';
-		map->player_y += 1;
-	}
-	return (map);
-}
-
-t_map	*moves_left(t_map *map)
-{
-	if (map->map[map->player_y][map->player_x - 1] == '0')
-	{
-		map->map[map->player_y][map->player_x - 1] = map->player_char;
-		map->map[map->player_y][map->player_x] = '0';
-		map->player_x -= 1;
-	}
-	return (map);
-}
-
-t_map	*moves_right(t_map *map)
-{
-	if (map->map[map->player_y][map->player_x + 1] == '0')
-	{
-		map->map[map->player_y][map->player_x + 1] = map->player_char;
-		map->map[map->player_y][map->player_x] = '0';
-		map->player_x += 1;
-	}
-	return (map);
+	mlx_destroy_image(map->vars.mlx, map->image.img);
+	map->image.img = mlx_new_image(map->vars.mlx, WIDTH, HEIGHT);
+	show_map(map);
 }
 
 int	handle_arrow_down(int key, t_map *map)
 {
-	if (key == UP_ARROW)
-	{
-		// moves_up(map);
-		redraw_map(map);
-	}
-	if (key == DOWN_ARROW)
-	{
-		// moves_down(map);
-		redraw_map(map);
-	}
 	if (key == LEFT_ARROW)
 	{
-		// moves_left(map);
 		map->angle -= 0.1;
+		if (map->angle < 0)
+			map->angle = 2 * PI;
 		redraw_map(map);
 	}
 	if (key == RIGHT_ARROW)
 	{
-		// moves_right(map);
 		map->angle += 0.1;
+		if (map->angle > 2 * PI)
+			map->angle = 0;
 		redraw_map(map);
 	}
 	return (0);
 }
 
-int	handle_key_down(int key, t_map *map)
+int	rotate(t_map *map, double angle)
 {
-	if (key == ESC)
-		close_window(map);
-	if (key == W)
+	double	old_dir_x;
+	double	old_plane_xx;
+
+	old_dir_x = map->player.dir_x;
+	old_plane_xx = map->player.plane_x;
+	map->player.dir_x = old_dir_x * cos(angle) - map->player.dir_y * sin(angle);
+	map->player.dir_y = old_dir_x * sin(angle) + map->player.dir_y * cos(angle);
+	map->player.plane_x = old_plane_xx * cos(angle) - map->player.plane_y
+		* sin(angle);
+	map->player.plane_y = old_plane_xx * sin(angle) + map->player.plane_y
+		* cos(angle);
+	return (0);
+}
+
+int	mouse_press(int button, int x, int y, t_map *map)
+{
+	if (button == 1)
 	{
-		moves_up(map);
-		redraw_map(map);
+		map->mouse.prev_x = x;
+		map->mouse.prev_y = y;
+		map->mouse.pressed = 1;
 	}
-	if (key == S)
+	return (0);
+}
+
+int	mouse_release(int button, int x, int y, t_map *map)
+{
+	if (button == 1)
 	{
-		moves_down(map);
-		redraw_map(map);
+		map->mouse.curr_x = x;
+		map->mouse.curr_y = y;
+		map->mouse.pressed = 0;
 	}
-	if (key == A)
-	{
-		moves_left(map);
-		redraw_map(map);
-	}
-	if (key == D)
-	{
-		moves_right(map);
-		redraw_map(map);
-	}
-	handle_arrow_down(key, map);
 	return (0);
 }
