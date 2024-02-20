@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_player.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:52:09 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/19 17:00:45 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/20 09:57:12 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,6 @@ void	redraw_map(t_map *map)
 	mlx_destroy_image(map->vars.mlx, map->image.img);
 	map->image.img = mlx_new_image(map->vars.mlx, WIDTH, HEIGHT);
 	show_map(map);
-}
-
-int	handle_arrow_down(int key, t_map *map)
-{
-	if (key == LEFT_ARROW)
-	{
-		map->angle -= 0.1;
-		if (map->angle < 0)
-			map->angle = 2 * PI;
-		redraw_map(map);
-	}
-	if (key == RIGHT_ARROW)
-	{
-		map->angle += 0.1;
-		if (map->angle > 2 * PI)
-			map->angle = 0;
-		redraw_map(map);
-	}
-	return (0);
 }
 
 int	rotate(t_map *map, double angle)

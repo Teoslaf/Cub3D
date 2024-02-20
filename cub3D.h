@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:18:49 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/19 16:59:48 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/20 14:18:48 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,14 @@ enum				e_texture
 	EAST,
 };
 
-typedef struct s_ray
+typedef struct s_key_moves
 {
-	double			xo;
-	double			yo;
-}					t_ray;
+	int				y_move;
+	int				x_move;
+	int				rotate;
+	int				esc;
+	int				minimap;
+}					t_key_moves;
 
 typedef struct s_texture
 {
@@ -161,14 +164,54 @@ typedef struct s_map
 	char			*east;
 	char			**map;
 	double			angle;
+	int				map_x;
+	int				map_y;
+	int				hit_wall;
+	int				line_height;
+	int				draw_start;
+	int				draw_end;
+	int				tex_x;
+	double			step;
+	double			tex_pos;
+	double			x1;
+	double			y1;
+	double			wall_x;
+	int				tex_y;
 	t_player		player;
 	t_image			image;
 	t_image			**textures;
 	t_vars			vars;
-	t_ray			ray;
+	t_key_moves		key;
 	t_mouse			mouse;
 }					t_map;
 
+void				set_no(t_map *map, char **format);
+void				set_so(t_map *map, char **format);
+void				set_ea(t_map *map, char **format);
+void				set_we(t_map *map, char **format);
+void				init_window(t_map *map);
+void				init_map2(t_map *map);
+void				init_player(t_map *map);
+void				init_map(t_map *map);
+void				draw_floor(t_map *map, int floor_color);
+void				draw_ceiling(t_map *map, int ceiling_color);
+void				draw_background(t_map *map);
+int					loop_hook(t_map *map);
+void				init_hooks(t_map *map);
+void				my_pixel_put(t_image *image, int x, int y, int color);
+void				draw_square(t_map *map, int xpos, int ypos);
+int					create_rgb(char **color);
+void				draw_background(t_map *map);
+void				set_dir(t_map *map);
+void				show_map(t_map *map);
+void				draw_walls(t_map *map, t_image *tex, int x);
+void				quick_math(t_map *map, t_image **tex);
+void				is_hit(t_map *map);
+void				draw_pink_screen(t_map *map);
+void				minimap(t_map *map);
+t_image				*get_direction_texture(t_map *map);
+void				calc(t_map *map, int x);
+void				calc_stesps(t_map *map, int x);
 int					read_map(char *map_file, t_map *map);
 int					get_color(char *line, t_map *map);
 int					get_texture(char *line, t_map *map);
@@ -189,10 +232,12 @@ void				free_map_double(t_map *map);
 
 // HOOK FUNCTIONS
 int					handle_key_down(int key, t_map *map);
+int					handle_key_up(int key, t_map *map);
 int					mouse_press(int button, int x, int y, t_map *map);
 int					mouse_release(int button, int x, int y, t_map *map);
 int					mouse_move(int x, int y, t_map *map);
 int					close_window(t_map *map);
+void				handle_movement(t_map *map);
 
 int					get_map_line_width(char *map_file, t_map *map);
 int					floor_ceiling_check(char *line, int j, int row, t_map *map);
@@ -221,8 +266,7 @@ void				move_right(t_map *map, double step);
 void				move_left(t_map *map, double step);
 void				move_backward(t_map *map, double step);
 void				move_forward(t_map *map, double step);
-void				handle_rotation(int key, t_map *map);
-void				handle_movement(int key, t_map *map);
+void				handle_rotation(t_map *map);
 int					mouse_move(int x, int y, t_map *map);
 void				redraw_map(t_map *map);
 int					rotate(t_map *map, double angle);

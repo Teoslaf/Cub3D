@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:07:52 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/19 17:02:09 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/20 14:19:27 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static int	get_texture_util(char *line, char **format)
 	j = -1;
 	while (line[i] && line[i] != '\n')
 	{
-		if (ft_isalpha(line[i]) || !ft_strncmp(line + i, "./", 2))
+		if (ft_isalpha(line[i]) || !ft_strncmp(line + i, "./", 2)
+			|| !ft_strncmp(line + i, "../", 3))
 		{
 			start = i;
 			while (line[i] && (ft_isalnum(line[i]) || line[i] == '_'
@@ -57,52 +58,13 @@ static int	get_texture_util(char *line, char **format)
 static void	get_texture_util4(int i, char **format, t_map *map)
 {
 	if (!ft_strncmp(format[0], "NO", 2))
-	{
-		map->north = ft_strdup(format[1]);
-		printf("north text: %s\n", map->north);
-		map->textures[NORTH]->img = mlx_xpm_file_to_image(map->vars.mlx,
-				map->north, &map->textures[NORTH]->width,
-				&map->textures[NORTH]->height);
-		map->textures[NORTH]->address = mlx_get_data_addr(map->textures[NORTH]->img,
-				&map->textures[NORTH]->bitxpixel,
-				&map->textures[NORTH]->line_len, &map->textures[NORTH]->endian);
-		map->textures[NORTH]->xoff = 1;
-		map->textures[NORTH]->yoff = 1;
-		map->north_set = 1;
-	}
+		set_no(map, format);
 	else if (!ft_strncmp(format[0], "SO", 2))
-	{
-		map->south = ft_strdup(format[1]);
-		map->textures[SOUTH]->img = mlx_xpm_file_to_image(map->vars.mlx,
-				map->south, &map->textures[SOUTH]->width,
-				&map->textures[SOUTH]->height);
-		map->textures[SOUTH]->address = mlx_get_data_addr(map->textures[SOUTH]->img,
-				&map->textures[SOUTH]->bitxpixel,
-				&map->textures[SOUTH]->line_len, &map->textures[SOUTH]->endian);
-		map->south_set = 1;
-	}
-	else if (!ft_strncmp(format[0], "WE", 2))
-	{
-		map->west = ft_strdup(format[1]);
-		map->textures[WEST]->img = mlx_xpm_file_to_image(map->vars.mlx,
-				map->west, &map->textures[WEST]->width,
-				&map->textures[WEST]->height);
-		map->textures[WEST]->address = mlx_get_data_addr(map->textures[WEST]->img,
-				&map->textures[WEST]->bitxpixel, &map->textures[WEST]->line_len,
-				&map->textures[WEST]->endian);
-		map->west_set = 1;
-	}
+		set_so(map, format);
 	else if (!ft_strncmp(format[0], "EA", 2))
-	{
-		map->east = ft_strdup(format[1]);
-		map->textures[EAST]->img = mlx_xpm_file_to_image(map->vars.mlx,
-				map->east, &map->textures[EAST]->width,
-				&map->textures[EAST]->height);
-		map->textures[EAST]->address = mlx_get_data_addr(map->textures[EAST]->img,
-				&map->textures[EAST]->bitxpixel, &map->textures[EAST]->line_len,
-				&map->textures[EAST]->endian);
-		map->east_set = 1;
-	}
+		set_ea(map, format);
+	else if (!ft_strncmp(format[0], "WE", 2))
+		set_we(map, format);
 	while (format[++i])
 		free(format[i]);
 	free(format);

@@ -1,7 +1,7 @@
-NO ../textures/Wall_Stone_022_basecolor.xpm
-SO textures/Wall_Stone_022_basecolor.xpm
-WE textures/Wall_Stone_022_basecolor.xpm
-EA textures/Wall_Stone_022_basecolor.xpm
+NO textures/Wall_Stone_022_basecolor.xpm
+SO textures/eagle.xpm
+WE textures/wood.xpm
+EA textures/purplestone.xpm
 
 F 180,95,6
 C 5,159,220
@@ -9,7 +9,7 @@ C 5,159,220
 
 	1111111111111111111111111  
 	100000000110000000000001
-	11110000011100000N0000001
+	11110000011100000S0000001
 	10000000000000000000000011111
 11111111011000001110000000000001
 100000000011000001110111111111111
