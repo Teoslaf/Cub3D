@@ -6,16 +6,17 @@
 /*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:56:50 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/08 12:59:33 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/02/21 13:51:26 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-int	check_file_extension(char *file)
+int	check_file_extension(char *file, t_map *map)
 {
 	int	len;
 
+	(void)map;
 	len = ft_strlen(file);
 	if (len < 4 || ft_strncmp(file + len - 4, ".cub", 4))
 	{
@@ -25,11 +26,12 @@ int	check_file_extension(char *file)
 	return (0);
 }
 
-int	check_texture_extension(char *file, char **format)
+int	check_texture_extension(char *file, char **format, t_map *map)
 {
 	int	i;
 	int	len;
 
+	(void)map;
 	len = ft_strlen(file);
 	if (len < 5 || ft_strncmp(file + len - 4, ".xpm", 4))
 	{

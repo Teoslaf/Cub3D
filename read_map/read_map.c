@@ -6,40 +6,19 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/19 17:01:43 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:01:43 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-void	print_map(t_map map)
-{
-	int	i;
-
-	i = 0;
-	while (map.map[i])
-	{
-		printf("%s", map.map[i]);
-		i++;
-	}
-}
-
 static int	error_code_check(char *map_file, t_map *map)
 {
-	int	i;
 	int	val;
 
 	val = get_map_line_width(map_file, map);
 	if (val)
-	{
-		if (val == 2 || val == 3)
-		{
-			i = 0;
-			while (i < map->rows_set)
-				free(map->map[i++]);
-		}
 		return (1);
-	}
 	if ((!map->north_set && printf("No north texture found!\n"))
 		|| (!map->south_set && printf("No south texture found\n"))
 		|| (!map->west_set && printf("No west texture found!\n"))
@@ -65,26 +44,36 @@ static int	hex_color_check(t_map *map)
 			num2 = ft_atoi(map->ceiling[i]);
 			if ((num1 < 0 || num1 > 255 || num2 < 0 || num2 > 255)
 				&& printf("Invalid hex code values!\n"))
-				return (1);
+				return (1); 
 		}
 		i++;
 	}
 	return (0);
 }
 
+int	read_map_helper(char *map_file, t_map *map)
+{
+	if (check_file_extension(map_file, map) == 1)
+		return (1);
+	map->height = get_map_height(map_file, map);
+	if (map->height <= 0 && printf("Empty Map!\n"))
+		return (1);
+	return (0);
+}
+
 int	read_map(char *map_file, t_map *map)
 {
 	int	fd;
+	int	i;
 
 	fd = open(map_file, O_RDONLY);
-	if (fd == -1)
+	if (fd == -1 && printf("File doesn't exist!\n"))
 		return (1);
-	if (check_file_extension(map_file) == 1)
-		return (1);
-	map->height = get_map_height(map_file, map);
-	if (map->height == 0 && printf("Empty Map!\n"))
-		return (1);
+	read_map_helper(map_file, map);
 	map->map = malloc(sizeof(char *) * (map->height + 1));
+	i = -1;
+	while (++i < map->height)
+		map->map[i] = NULL;
 	if (!map->map && printf("Map allocation failed!\n"))
 		return (1);
 	if (error_code_check(map_file, map) || hex_color_check(map))

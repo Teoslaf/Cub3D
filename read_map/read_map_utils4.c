@@ -6,7 +6,7 @@
 /*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:01:24 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/08 10:36:33 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/02/21 13:49:32 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	texture_check(char *line, int j, int row, t_map *map)
 	val = get_texture(line + j, map);
 	if ((val == 1 && printf("Too many textures!\n")) || (val == 2
 			&& printf("Malloc error!\n")) || (val == 3
-			&& printf("Wrong texture format!\n")))
+			&& printf("Wrong texture format!\n")) || val == 4)
 	{
 		if (row >= 1)
 			map->rows_set = row;
@@ -71,7 +71,6 @@ int	map_line_check(char *line, int row, t_map *map)
 	if ((ft_isprint(line[0]) && (line[0] != '\n' || line[0] != '\0'))
 		&& printf("Extra info on map file\n"))
 	{
-		printf("line[0]: %c | line: %s\n", line[0], line);
 		if (row >= 1)
 			map->rows_set = row;
 		return (1);

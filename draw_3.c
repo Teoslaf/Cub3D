@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 13:45:52 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/20 14:06:03 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:53:06 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	draw_player(t_map *map, int xpos, int ypos)
 	int	j;
 
 	i = 0;
+	(void)xpos;
+	(void)ypos;
 	while (i < PLAYER)
 	{
 		j = 0;
@@ -56,6 +58,8 @@ void	draw_square(t_map *map, int xpos, int ypos)
 	int	j;
 
 	i = 0;
+	(void)ypos;
+	(void)xpos;
 	while (i < SQUARE - 2)
 	{
 		j = 0;

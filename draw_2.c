@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 13:36:42 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/20 13:43:26 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/21 10:30:15 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	calc(t_map *map, int x)
 
 void	calc_stesps(t_map *map, int x)
 {
+	(void)x;
 	if (map->player.ray_dir_x < 0)
 	{
 		map->player.step_x = -1;

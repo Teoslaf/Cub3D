@@ -1,5 +1,5 @@
 NAME = cub3D
-SRCS = main.c read_map/tex_init.c init.c draw.c draw_2.c draw_3.c  draw_4.c read_map/read_map.c move_player3.c read_map/read_map_utils.c move_player_2.c read_map/read_map_utils2.c read_map/read_map_utils3.c read_map/read_map_utils4.c read_map/get_height_utils.c free.c read_map/map_checks.c read_map/map_checks_2.c read_map/map_check_player.c move_player.c read_map/color_texture.c read_map/color_texture_2.c
+SRCS = main.c read_map/tex_init.c init.c get_tex.c draw.c draw_2.c draw_3.c  draw_4.c read_map/read_map.c move_player3.c read_map/read_map_utils.c move_player_2.c read_map/read_map_utils2.c read_map/read_map_utils3.c read_map/read_map_utils4.c read_map/get_height_utils.c free.c read_map/map_checks.c read_map/map_checks_2.c read_map/map_check_player.c move_player.c read_map/color_texture.c read_map/color_texture_2.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -11,7 +11,7 @@ HEADERS = -I $(LIBFT) -I $(MLX)
 LIBS = -Lmlx -lmlx_Linux -Imlx -lXext -lX11 -lm
 
 CC = cc
-CFLAGS = -g #-Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g
 
 all: $(NAME)
 

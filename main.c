@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:17:28 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/20 14:03:49 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:55:15 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	close_window(t_map *map)
 {
-	(void)map;
+	free_map(map);
 	printf("CLOSING APP\n");
 	exit(0);
 }
@@ -32,18 +32,18 @@ int	main(int argc, char **argv)
 	map = malloc(sizeof(t_map));
 	if (!map)
 		return (1);
-	init_window(map);
+	map->vars.mlx = mlx_init();
 	init_map(map);
 	if (argc < 2)
 		printf("No map given!\n");
 	if (argc > 2)
 		printf("Too many arguments\n");
-	if (read_map(argv[1], map))
-		printf("Error opening the map\n");
+	if (read_map(argv[1], map) && printf("Error opening the map\n"))
+		free_map(map);
 	else
 	{
 		printf("Valid Map\n");
-		printf("map direction: %c\n", map->player.direction);
+		init_window(map);
 		set_dir(map);
 		init_hooks(map);
 		mlx_loop(map->vars.mlx);

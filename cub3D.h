@@ -6,7 +6,7 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:18:49 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/20 14:18:48 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:06:10 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define C 2
 # define NUM 3
 # define COMMA 4
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 1200
+# define HEIGHT 800
 # define ESC 65307
 # define A 97
 # define S 115
@@ -177,6 +177,7 @@ typedef struct s_map
 	double			y1;
 	double			wall_x;
 	int				tex_y;
+	int				counter;
 	t_player		player;
 	t_image			image;
 	t_image			**textures;
@@ -185,10 +186,11 @@ typedef struct s_map
 	t_mouse			mouse;
 }					t_map;
 
-void				set_no(t_map *map, char **format);
-void				set_so(t_map *map, char **format);
-void				set_ea(t_map *map, char **format);
-void				set_we(t_map *map, char **format);
+int					get_texture(char *line, t_map *map);
+int					set_no(t_map *map, char **format);
+int					set_so(t_map *map, char **format);
+int					set_ea(t_map *map, char **format);
+int					set_we(t_map *map, char **format);
 void				init_window(t_map *map);
 void				init_map2(t_map *map);
 void				init_player(t_map *map);
@@ -215,6 +217,12 @@ void				calc_stesps(t_map *map, int x);
 int					read_map(char *map_file, t_map *map);
 int					get_color(char *line, t_map *map);
 int					get_texture(char *line, t_map *map);
+int					get_texture_util2(int j, char **format);
+int					get_texture_util(char *line, char **format);
+void				free_format(int i, char **format);
+int					get_texture_util4(int i, char **format, t_map *map);
+int					get_texture_util3(char **format, t_map *map);
+
 int					is_valid_path(t_map *map);
 int					path(t_map *temp, int y, int x);
 void				copy_game(t_map *source, t_map *destination);
@@ -223,8 +231,9 @@ int					get_pos_by_char(t_map *map, char c, char search_char);
 int					check_size(t_map *map);
 int					check_player(t_map *map);
 int					empty_map(char *map_file);
-int					check_file_extension(char *file);
-int					check_texture_extension(char *file, char **format);
+int					check_file_extension(char *file, t_map *map);
+int					check_texture_extension(char *file, char **format,
+						t_map *map);
 
 void				free_map(t_map *map);
 void				print_map(t_map map);
@@ -270,5 +279,12 @@ void				handle_rotation(t_map *map);
 int					mouse_move(int x, int y, t_map *map);
 void				redraw_map(t_map *map);
 int					rotate(t_map *map, double angle);
+
+//	FREE FUNCTIONS
+void				free_texture_text(t_map *map);
+void				free_map_grid(t_map *map);
+void				free_hex_color_fail(t_map *map);
+void				free_texture_errors(t_map *map);
+void				free_walls(t_map *map);
 
 #endif

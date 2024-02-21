@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move_player_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 16:42:38 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/20 14:06:52 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:55:04 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	mouse_move(int x, int y, t_map *map)
 {
 	double	rot;
 
+	(void)y;
 	rot = 0.05;
 	if (map->mouse.pressed)
 	{

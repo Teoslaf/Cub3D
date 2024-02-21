@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:01:51 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/20 14:03:37 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/21 13:10:54 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	init_window(t_map *map)
 {
-	map->vars.mlx = mlx_init();
 	map->vars.win = mlx_new_window(map->vars.mlx, WIDTH, HEIGHT, "Cube3D");
 	map->image.img = mlx_new_image(map->vars.mlx, WIDTH, HEIGHT);
 	map->image.address = mlx_get_data_addr(map->image.img,
@@ -64,18 +63,24 @@ void	init_map(t_map *map)
 {
 	int	i;
 
-	i = 0;
 	init_map2(map);
+	map->image.img = NULL;
+	map->vars.win = NULL;
 	map->key.minimap = 0;
 	map->key.esc = 0;
 	map->key.x_move = 0;
 	map->key.y_move = 0;
 	map->key.rotate = 0;
+	map->mouse.pressed = 0;
 	map->textures = malloc(sizeof(t_image) * 4);
 	if (!map->textures && printf("Error allocating textures\n"))
 		return ;
-	while (i < 4)
-		map->textures[i++] = malloc(sizeof(t_image));
+	i = -1;
+	while (++i < 4)
+	{
+		map->textures[i] = malloc(sizeof(t_image));
+		map->textures[i]->img = NULL;
+	}
 	map->time = 0;
 	map->old_time = 0;
 }

@@ -6,13 +6,13 @@
 /*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 13:07:52 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/20 14:19:27 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:06:17 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub3D.h"
 
-static int	get_texture_util2(int j, char **format)
+int	get_texture_util2(int j, char **format)
 {
 	int	i;
 
@@ -27,7 +27,7 @@ static int	get_texture_util2(int j, char **format)
 	return (0);
 }
 
-static int	get_texture_util(char *line, char **format)
+int	get_texture_util(char *line, char **format)
 {
 	int	i;
 	int	j;
@@ -55,28 +55,46 @@ static int	get_texture_util(char *line, char **format)
 	return (0);
 }
 
-static void	get_texture_util4(int i, char **format, t_map *map)
+void	free_format(int i, char **format)
 {
-	if (!ft_strncmp(format[0], "NO", 2))
-		set_no(map, format);
-	else if (!ft_strncmp(format[0], "SO", 2))
-		set_so(map, format);
-	else if (!ft_strncmp(format[0], "EA", 2))
-		set_ea(map, format);
-	else if (!ft_strncmp(format[0], "WE", 2))
-		set_we(map, format);
 	while (format[++i])
 		free(format[i]);
 	free(format);
 }
 
-static int	get_texture_util3(char **format, t_map *map)
+int	get_texture_util4(int i, char **format, t_map *map)
+{
+	if (!ft_strncmp(format[0], "NO", 2))
+	{
+		if (set_no(map, format))
+			return (free_format(i, format), 1);
+	}
+	else if (!ft_strncmp(format[0], "SO", 2))
+	{
+		if (set_so(map, format))
+			return (free_format(i, format), 1);
+	}
+	else if (!ft_strncmp(format[0], "EA", 2))
+	{
+		if (set_ea(map, format))
+			return (free_format(i, format), 1);
+	}
+	else if (!ft_strncmp(format[0], "WE", 2))
+	{
+		if (set_we(map, format))
+			return (free_format(i, format), 1);
+	}
+	return (free_format(i, format), 0);
+}
+
+int	get_texture_util3(char **format, t_map *map)
 {
 	int	i;
 
 	if (format[1])
 	{
-		get_texture_util4(-1, format, map);
+		if (get_texture_util4(-1, format, map))
+			return (4);
 		return (0);
 	}
 	else
@@ -87,25 +105,4 @@ static int	get_texture_util3(char **format, t_map *map)
 		free(format);
 		return (3);
 	}
-}
-
-int	get_texture(char *line, t_map *map)
-{
-	char	**format;
-
-	if ((!ft_strncmp(line, "NO", 2) && map->north_set) || (!ft_strncmp(line,
-				"SO", 2) && map->south_set) || (!ft_strncmp(line, "WE", 2)
-			&& map->west_set) || (!ft_strncmp(line, "EA", 2) && map->east_set))
-		return (1);
-	format = malloc(sizeof(char *) * 3);
-	if (!format)
-		return (2);
-	if (get_texture_util(line, format))
-		return (3);
-	if (format[1])
-		if (check_texture_extension(format[1], format))
-			return (3);
-	if (get_texture_util3(format, map))
-		return (3);
-	return (0);
 }

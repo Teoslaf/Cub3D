@@ -6,7 +6,7 @@
 /*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:04:48 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/19 10:06:34 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/02/21 13:49:45 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,14 +115,10 @@ int	get_map_line_width(char *map_file, t_map *map)
 		return (-1);
 	row = 0;
 	line = get_next_line(fd);
-	while (!ft_strncmp(line, "\n", 1))
-	{
-		free(line);
-		line = get_next_line(fd);
-	}
 	if (check_before_map(&line, fd, &row, map)
 		&& printf("Error in checking before map\n"))
 		return (1);
+	row = 0;
 	if (check_in_map(&line, fd, &row, map))
 		return (2);
 	if (check_after_map(&line, fd, &row, map))

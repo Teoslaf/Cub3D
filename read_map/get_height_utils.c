@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_height_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 15:59:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/08 11:31:14 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/02/21 14:01:16 by ttaneski         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ static int	get_map_height_util(char **line, int *row, int fd)
 static void	get_map_height_util_2(char **line, int *row, int *height, int fd)
 {
 	int	i;
+	int	map_height_set;
 
+	map_height_set = 0;
 	while ((*line))
 	{
 		i = 0;
@@ -44,14 +46,16 @@ static void	get_map_height_util_2(char **line, int *row, int *height, int fd)
 		if ((((*line)[0] == '\n' || (*line)[0] == '\0')) && (*height) > 0)
 		{
 			free((*line));
-			return ;
+			(*line) = get_next_line(fd);
+			map_height_set = 1;
+			continue ;
 		}
-		(*height)++;
+		if (!map_height_set)
+			(*height)++;
 		(*row)++;
 		free((*line));
 		(*line) = get_next_line(fd);
 	}
-	return ;
 }
 
 int	get_map_height(char *map_file, t_map *map)
@@ -68,10 +72,10 @@ int	get_map_height(char *map_file, t_map *map)
 	row = 1;
 	line = get_next_line(fd);
 	if (get_map_height_util(&line, &row, fd)
-		&& printf("Error in get_map_height_util\n"))
+		&& printf("Error in get_map_height_utils\n"))
 		return (-1);
+	map->map_start = row;
 	get_map_height_util_2(&line, &row, &height, fd);
-	map->map_start = row - height;
 	close(fd);
 	return (height);
 }
