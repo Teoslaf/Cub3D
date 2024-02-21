@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_height_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 15:59:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/21 14:01:16 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:51:20 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ int	get_map_height(char *map_file, t_map *map)
 	height = 0;
 	row = 1;
 	line = get_next_line(fd);
-	if (get_map_height_util(&line, &row, fd)
-		&& printf("Error in get_map_height_utils\n"))
+	if (get_map_height_util(&line, &row, fd))
 		return (-1);
 	map->map_start = row;
 	get_map_height_util_2(&line, &row, &height, fd);

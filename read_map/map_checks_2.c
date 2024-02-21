@@ -6,7 +6,7 @@
 /*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:56:50 by ttaneski          #+#    #+#             */
-/*   Updated: 2024/02/21 13:51:26 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/02/21 15:10:35 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,18 @@ int	empty_map(char *map_file)
 int	check_size(t_map *map)
 {
 	int	i;
+	int	valid_lines;
 
 	if (map == NULL || map->map == NULL || map->height < 3)
 		return (1);
 	i = 0;
+	valid_lines = 0;
 	while (i < map->height)
 	{
-		if (ft_strlen(map->map[i]) < 3)
+		if (ft_strlen(map->map[i]) < 3 && valid_lines < 3)
 			return (1);
 		i++;
+		valid_lines++;
 	}
 	return (0);
 }

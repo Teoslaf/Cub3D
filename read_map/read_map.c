@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ttaneski <ttaneski@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 10:21:44 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/21 14:01:43 by ttaneski         ###   ########.fr       */
+/*   Updated: 2024/02/21 14:45:52 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,12 @@ static int	hex_color_check(t_map *map)
 	return (0);
 }
 
-int	read_map_helper(char *map_file, t_map *map)
+int	read_map_helper( int *fd, char *map_file, t_map *map)
 {
 	if (check_file_extension(map_file, map) == 1)
+		return (1);
+	*fd = open(map_file, O_RDONLY);
+	if (*fd == -1 && printf("File doesn't exist!\n"))
 		return (1);
 	map->height = get_map_height(map_file, map);
 	if (map->height <= 0 && printf("Empty Map!\n"))
@@ -66,10 +69,8 @@ int	read_map(char *map_file, t_map *map)
 	int	fd;
 	int	i;
 
-	fd = open(map_file, O_RDONLY);
-	if (fd == -1 && printf("File doesn't exist!\n"))
+	if (read_map_helper(&fd, map_file, map))
 		return (1);
-	read_map_helper(map_file, map);
 	map->map = malloc(sizeof(char *) * (map->height + 1));
 	i = -1;
 	while (++i < map->height)

@@ -6,7 +6,7 @@
 /*   By: cdurro <cdurro@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 15:57:50 by cdurro            #+#    #+#             */
-/*   Updated: 2024/02/21 13:55:32 by cdurro           ###   ########.fr       */
+/*   Updated: 2024/02/21 15:04:20 by cdurro           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,12 @@ void	free_map_grid(t_map *map)
 {
 	int	i;
 
-	if (map->map_set)
+	i = 0;
+	while (i < map->height)
 	{
-		i = 0;
-		while (i < map->height)
-		{
-			if (map->map[i])
-				free(map->map[i]);
-			i++;
-		}
+		if (map->map[i])
+			free(map->map[i]);
+		i++;
 	}
 	if (map->map)
 		free(map->map);
