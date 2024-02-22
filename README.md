@@ -2,7 +2,7 @@
 
 Cub3D is project a graphics project designed to introduce students to the basics of raycasting and the fundamental principles of computer graphics. This project is part of the curriculum at 42, an innovative coding school focused on peer-to-peer learning and project-based education.
 
-![gameplay](https://i.imgur.com/btVvpBV.gif)
+[gameplay](https://i.imgur.com/btVvpBV.gif)
 
 ## Project Overview:
 Cub3D is inspired by the classic game Wolfenstein 3D, a first-person shooter developed by id Software and released in 1992. In this project, you will create a simplified version of the game engine using the C programming language and the powerful graphics library called MiniLibX.
