@@ -4,7 +4,7 @@ Cub3D is project a graphics project designed to introduce students to the basics
 
 
 
-#### Project Overview:
+## Project Overview:
 Cub3D is inspired by the classic game Wolfenstein 3D, a first-person shooter developed by id Software and released in 1992. In this project, you will create a simplified version of the game engine using the C programming language and the powerful graphics library called MiniLibX.
 ## Features:
 Features:
@@ -15,8 +15,7 @@ Features:
 - Sprite Rendering: Render sprites within the game world, such as enemies or items.
 - Collision Detection: Implement collision detection to ensure the player cannot walk through walls or other solid objects.
 
-## Installation
-
+## Installation:
 To compile and run the Cub3D project, follow these steps:
 - Clone the project repository.
 - Navigate to the project directory.
@@ -24,7 +23,9 @@ To compile and run the Cub3D project, follow these steps:
 - Execute the generated executable with a valid map file as an argument.
 
 ## Usage: 
+```bash
 ./cub3D path_to_map_file.cub
+```
 ## Map File Format:
 The map file contains the layout of the game world and follows a specific format. Here is an example:
 R 1920 1080  // Resolution
@@ -48,6 +49,7 @@ Map representation, where '1' represents a wall.
 - M: toggle minimap
 - ← and →: Strafe left and right 
 - ESC: Exit the game
+- 
 ## Dependencies:
  - C compiler (gcc or clang)
  - MiniLibX library
